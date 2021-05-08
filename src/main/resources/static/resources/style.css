@@ -1,0 +1,8 @@
+.map {
+    width: 49%;
+    height: 90%;
+    display: inline-block;
+    border-color: black;
+    border-width: 2px;
+    border-style: dashed;
+}

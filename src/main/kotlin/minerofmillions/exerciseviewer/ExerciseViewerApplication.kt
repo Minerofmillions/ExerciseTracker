@@ -13,10 +13,6 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.view.RedirectView
 import java.io.File
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 import kotlin.math.ceil
@@ -170,30 +166,6 @@ class ExerciseViewerApplication {
 
 fun main(args: Array<String>) {
     runApplication<ExerciseViewerApplication>(*args)
-}
-
-fun downloadRoute() {
-    val apiKey = "AIzaSyBjGjOEvEB_i1qTbXbgdCBvfGumlIto58k"
-    val client = HttpClient.newHttpClient()
-    val request = HttpRequest.newBuilder(
-        URI(
-            "https://maps.googleapis.com/maps/api/directions/json?" +
-                    "key=$apiKey&" +
-                    "origin=5524+Wedgegate+Dr+27616&" +
-                    "destination=146+Hollingshead+Loop+33896&" +
-                    "mode=bicycling&" +
-                    "waypoints=613+Trader+Mill+Rd+29223%7C116+Kennington+Dr+29445%7C1563+Castlewick+Ave+29455%7C515+Stonecreek+Dr+29414"
-        )
-    )
-        .GET()
-        .build()
-
-    val response = client.send(request, HttpResponse.BodyHandlers.ofInputStream())
-    File("response.json").writer().use { writer ->
-        response.body().reader().use { reader ->
-            writer.write(reader.readText())
-        }
-    }
 }
 
 private fun getFeature(route: Route) = Feature(

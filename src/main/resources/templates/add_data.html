@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/resources/style.css" rel="stylesheet"/>
+</head>
+<body>
+<h1 th:text="'Welcome in, ' + ${name} + '!'"></h1>
+<form action="/add" method="POST" th:object="${exerciseData}">
+    <table>
+        <tr>
+            <th><label for="type">Type</label></th>
+            <td><select id="type" th:field="*{type}">
+                <option th:each="exerciseType: ${exerciseTypes}" th:text="${exerciseType.readableName}"
+                        th:value="${exerciseType}"></option>
+            </select></td>
+        </tr>
+        <tr>
+            <th><label for="date">Date</label></th>
+            <td><input id="date" th:field="*{date}" type="date"/></td>
+        </tr>
+        <tr>
+            <th><label for="distance">Distance (Miles)</label></th>
+            <td><input id="distance" min="0" step="any" th:field="*{distance}" type="number"/></td>
+        </tr>
+        <tr>
+            <th>Duration</th>
+            <td>
+                <label>Hours: <input id="durationHour" max="24" min="0" name="durationHour" type="number"/></label>
+                <label>Minutes: <input id="durationMinute" max="60" min="0" name="durationMinute"
+                                       type="number"/></label>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit"></td>
+        </tr>
+    </table>
+    <input th:field="*{person}" th:value="${person}" type="hidden"/>
+</form>
+</body>
+</html>

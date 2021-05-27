@@ -1,23 +1,32 @@
 package minerofmillions.exerciseviewer
 
-import java.util.*
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
 
-@Entity
 data class ExerciseData(
-    val name: String,
-    val type: ExerciseType,
-    val date: Date,
-    val distance: Double,
-    val time: Long,
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) val id: Long
+    val person: Person,
+    var type: ExerciseType = ExerciseType.BIKING,
+    var date: String = "",
+    var distance: Double = 0.0,
+    var duration: Int = 0
 ) {
-    enum class ExerciseType {
-        BIKING,
-        WALKING,
-        RUNNING
+    enum class ExerciseType(val readableName: String) {
+        BIKING("Biking"),
+        WALKING("Walking"),
+        RUNNING("Running")
     }
+}
+
+enum class Person(val realName: String) {
+    TONY("Tony"),
+    LAVERNE("Laverne"),
+    VICKIE("Vickie"),
+    PAM("Pam"),
+    HAYDEN("Hayden"),
+    KEVIN("Kevin"),
+    JEN("Jen"),
+    RANDY("Randy"),
+    AIMEE("Aimee"),
+    CINDY("Cindy"),
+    MARK("Mark"),
+    JASON("Jason"),
+    ALEX("Alex")
 }

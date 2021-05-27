@@ -24,14 +24,10 @@ class ExerciseViewerApplication {
     @PostMapping("/view")
     fun launchData(
         @RequestParam(name = "name", required = true) name: String,
-        model: Model,
         response: HttpServletResponse
-    ): String {
+    ): RedirectView {
         response.addCookie(Cookie("name", name))
-        val person = Person.valueOf(name)
-        model.addAttribute("name", person.realName)
-        model.addAttribute("data", exerciseDataByPerson[person] ?: emptyList<ExerciseData>())
-        return "view"
+        return RedirectView("/view")
     }
 
     @GetMapping("/view")

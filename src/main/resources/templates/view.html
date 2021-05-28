@@ -1,22 +1,22 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Exercise Viewer</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-    <link href="/resources/style.css" rel="stylesheet"/>
+  <title>Exercise Viewer</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <link href="/resources/style.css" rel="stylesheet"/>
 </head>
 <body>
-<h1 th:text="'Welcome in, ' + ${name} + '!'"></h1>
-<h2><a href="/add">Log exercise data</a></h2>
+<h1 th:text="'Welcome, ' + ${name} + '!'"></h1>
+<h2><a href="/add">Log exercise data</a><br/><a href="/">Choose a different family member</a></h2>
 <iframe class="map" id="individualMap" src="/map.html?type=individual&mapName=Individual%20Progress"
         title="Individual Progress Map"></iframe>
 <iframe class="map" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
         title="Total Progress Map"></iframe>
 <ul>
-    <li th:each="current: ${data}">
-        <p th:text="${current.type.readableName} + ' on ' + ${current.date}"></p>
-        <p th:text="${current.distance} + ' miles in ' + ${current.duration} + ' minutes.'"></p>
-    </li>
+  <li th:each="current: ${data}">
+    <p th:text="${current.type.readableName} + ' on ' + ${current.date}"></p>
+    <p th:text="${current.distance} + ' miles in ' + ${current.duration} + ' minutes.'"></p>
+  </li>
 </ul>
 </body>
 </html>

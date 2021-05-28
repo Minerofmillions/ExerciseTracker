@@ -22,14 +22,14 @@
         </tr>
         <tr>
             <th><label for="distance">Distance (Miles)</label></th>
-            <td><input id="distance" min="0" step="any" th:field="*{distance}" type="number"/></td>
+            <td><input id="distance" min="0" step="any" th:field="*{distance}" type="number" value="0"/></td>
         </tr>
         <tr>
             <th>Duration</th>
             <td>
-                <label>Hours: <input id="durationHour" max="24" min="0" name="durationHour" type="number"/></label>
+                <label>Hours: <input id="durationHour" max="24" min="0" name="durationHour" type="number" value="0"/></label>
                 <label>Minutes: <input id="durationMinute" max="60" min="0" name="durationMinute"
-                                       type="number"/></label>
+                                       type="number" value="00"/></label>
             </td>
         </tr>
         <tr>

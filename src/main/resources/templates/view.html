@@ -12,6 +12,8 @@
         title="Individual Progress Map"></iframe>
 <iframe class="map" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
         title="Total Progress Map"></iframe>
+<p th:text="'Total personal distance: ' + ${totalIndividualDistance}"></p>
+<p th:text="'Total family distance: ' + ${totalFamilyDistance}"></p>
 <ul>
   <li th:each="current: ${data}">
     <p th:text="${current.type.readableName} + ' on ' + ${current.date}"></p>

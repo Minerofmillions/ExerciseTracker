@@ -1,5 +1,7 @@
 package minerofmillions.exerciseviewer.entities
 
+import kotlin.math.max
+
 
 data class ExerciseData(
     val person: Person,
@@ -8,6 +10,9 @@ data class ExerciseData(
     var distance: Double = 0.0,
     var duration: Int = 0
 ) {
+    val weightedDistance: Double
+        get() = max(distance, duration / 5.0)
+
     enum class ExerciseType(val readableName: String) {
         BIKING("Biking"),
         WALKING("Walking"),

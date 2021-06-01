@@ -26,9 +26,9 @@ class ExerciseViewerService {
     val routeJSON: GeoJSON
     val routeToDistance: MutableTimeMap<Int, GeoJSON> = mutableTimeMapOf()
 
-    internal fun getTotalDistance() = exerciseData.sumByDouble { it.distance }
+    internal fun getTotalDistance() = exerciseData.sumByDouble { it.weightedDistance }
     internal fun getDistanceOf(person: Person) =
-        (exerciseDataByPerson[person] ?: emptyList()).sumByDouble { it.distance }
+        (exerciseDataByPerson[person] ?: emptyList()).sumByDouble { it.weightedDistance }
 
     init {
         val response = File("response.json").reader().use {

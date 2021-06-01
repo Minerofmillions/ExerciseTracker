@@ -35,6 +35,8 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         val person = Person.valueOf(name)
         model.addAttribute("name", person.realName)
         model.addAttribute("data", service.exerciseDataByPerson[person] ?: emptyList<ExerciseData>())
+        model.addAttribute("totalIndividualDistance", service.getDistanceOf(person))
+        model.addAttribute("totalFamilyDistance", service.getTotalDistance())
         return "view"
     }
 

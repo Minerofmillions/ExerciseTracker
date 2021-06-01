@@ -1,4 +1,4 @@
-package minerofmillions.util
+package minerofmillions.exerciseviewer.util
 
 interface TimeMap<K : Comparable<K>, V> : Map<K, V> {
     override fun get(key: K): V? = entries.lastOrNull { it.key <= key }?.value

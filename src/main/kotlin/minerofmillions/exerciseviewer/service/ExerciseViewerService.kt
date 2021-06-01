@@ -23,18 +23,41 @@ class ExerciseViewerService {
     val exerciseDataByPerson
         get() = exerciseData.groupBy { it.person }
 
-    val routeJSON: GeoJSON
-    val routeToDistance: MutableTimeMap<Int, GeoJSON> = mutableTimeMapOf()
+    final val individualRouteJSON: GeoJSON
+    final val individualRouteToDistance: MutableTimeMap<Int, GeoJSON> = mutableTimeMapOf()
+
+    final val totalRouteJSON: GeoJSON
+    final val totalRouteToDistance: MutableTimeMap<Int, GeoJSON> = mutableTimeMapOf()
 
     internal fun getTotalDistance() = exerciseData.sumByDouble { it.weightedDistance }
     internal fun getDistanceOf(person: Person) =
         (exerciseDataByPerson[person] ?: emptyList()).sumByDouble { it.weightedDistance }
 
     init {
-        val response = File("response.json").reader().use {
+        val individualResponse = File("individualResponse.json").reader().use {
             gson.fromJson(it, Response::class.java)
         }
+        individualRouteJSON = parseResponse(individualResponse, individualRouteToDistance)
 
+        val totalResponse = File("totalResponse.json").reader().use {
+            gson.fromJson(it, Response::class.java)
+        }
+        totalRouteJSON = parseResponse(totalResponse, totalRouteToDistance)
+
+        if (!exerciseDataFile.exists()) {
+            exerciseDataFile.createNewFile()
+            exerciseDataFile.writeText("[]")
+        }
+        exerciseData.addAll(
+            gson.fromJson(
+                exerciseDataFile.reader(),
+                ExerciseDataListTypeToken.type
+            ) ?: emptyList()
+        )
+
+    }
+
+    private fun parseResponse(response: Response, routeToDistance: MutableTimeMap<Int, GeoJSON>): GeoJSON {
         val route = response.routes[0]
 
         val positions = route.legs.flatMap { leg ->
@@ -66,24 +89,13 @@ class ExerciseViewerService {
             )
         }
 
-        routeJSON = FeatureCollection(
+        return FeatureCollection(
             listOf(
                 Feature(
                     null,
                     LineString(fullRoute)
                 )
             )
-        )
-
-        if (!exerciseDataFile.exists()) {
-            exerciseDataFile.createNewFile()
-            exerciseDataFile.writeText("[]")
-        }
-        exerciseData.addAll(
-            gson.fromJson(
-                exerciseDataFile.reader(),
-                ExerciseDataListTypeToken.type
-            ) ?: emptyList()
         )
     }
 
@@ -112,6 +124,13 @@ class ExerciseViewerService {
             ) to step.distance.value
         }
     }
+
+    private fun positionsToFeatureCollection(route: List<Position>): FeatureCollection =
+        FeatureCollection(
+            listOf(
+                Feature(null, LineString(route))
+            )
+        )
 }
 
 

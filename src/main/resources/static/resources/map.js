@@ -16,10 +16,16 @@ let routeCoordinates;
 let progress;
 let progressCoordinates;
 
-const options = {
+const individualOptions = {
   lat: 32.04526885,
   lng: -80.1408972,
   zoom: 6,
+  style: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+}
+const totalOptions = {
+  lat: 33.0194843,
+  lng: -80.0505926,
+  zoom: 8,
   style: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
 }
 const mappa = new Mappa('Leaflet');
@@ -36,7 +42,11 @@ function preload() {
 
 function setup() {
   canvas = createCanvas(windowWidth, 500);
-  myMap = mappa.tileMap(options);
+  if (qd.type == "individual") {
+    myMap = mappa.tileMap(individualOptions);
+  } else if (qd.type == "total") {
+    myMap = mappa.tileMap(totalOptions)
+  }
   myMap.overlay(canvas);
 
   routeCoordinates = myMap.geoJSON(data, "LineString").flatMap(trip => trip);
@@ -58,6 +68,11 @@ function drawPoints(){
   progressCoordinates.map(coord => myMap.latLngToPixel(coord.lat, coord.lng)).forEach(pos => {
     ellipse(pos.x, pos.y, 5, 5);
   });
+
+  fill(255, 127, 0);
+  let start = progressCoordinates[0];
+  let startPos = myMap.latLngToPixel(start.lat, start.lng);
+  ellipse(startPos.x, startPos.y, 7, 7);
 }
 
 function windowResized() {

@@ -27,6 +27,9 @@ sealed class GeoJSON(val type: String) {
 class FeatureCollection(val features: List<Feature>) : GeoJSON("FeatureCollection")
 class Feature(val properties: Map<String, Any>?, val geometry: Geometry?) : GeoJSON("Feature")
 
+fun emptyFeatureCollection() = FeatureCollection(emptyList())
+fun featureCollectionOf(vararg features: Feature) = FeatureCollection(features.toList())
+
 sealed class Geometry(type: String) : GeoJSON(type) {
     object Serializer : JsonDeserializer<Geometry> {
         override fun deserialize(element: JsonElement, type: Type, context: JsonDeserializationContext): Geometry =

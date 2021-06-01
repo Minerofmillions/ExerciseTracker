@@ -1,4 +1,4 @@
-package minerofmillions.exerciseviewer
+package minerofmillions.exerciseviewer.entities
 
 
 data class ExerciseData(

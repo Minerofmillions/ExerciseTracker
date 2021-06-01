@@ -2,7 +2,7 @@ package minerofmillions.exerciseviewer.service
 
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import minerofmillions.exerciseviewer.*
+import minerofmillions.exerciseviewer.entities.*
 import minerofmillions.exerciseviewer.util.MutableTimeMap
 import minerofmillions.exerciseviewer.util.mutableTimeMapOf
 import org.springframework.stereotype.Service

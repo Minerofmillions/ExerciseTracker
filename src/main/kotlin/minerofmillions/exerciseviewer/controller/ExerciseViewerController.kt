@@ -1,7 +1,7 @@
 package minerofmillions.exerciseviewer.controller
 
-import minerofmillions.exerciseviewer.ExerciseData
-import minerofmillions.exerciseviewer.Person
+import minerofmillions.exerciseviewer.entities.ExerciseData
+import minerofmillions.exerciseviewer.entities.Person
 import minerofmillions.exerciseviewer.service.ExerciseViewerService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model

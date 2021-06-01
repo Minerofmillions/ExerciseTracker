@@ -1,7 +1,7 @@
 package minerofmillions.exerciseviewer.controller
 
-import minerofmillions.exerciseviewer.GeoJSON
-import minerofmillions.exerciseviewer.Person
+import minerofmillions.exerciseviewer.entities.GeoJSON
+import minerofmillions.exerciseviewer.entities.Person
 import minerofmillions.exerciseviewer.service.ExerciseViewerService
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.cache.annotation.EnableCaching

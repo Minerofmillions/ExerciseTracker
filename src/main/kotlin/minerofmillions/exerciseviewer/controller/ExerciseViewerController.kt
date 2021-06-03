@@ -58,11 +58,15 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
     ): RedirectView {
         data.duration = durationHour * 60 + durationMin
         service.exerciseData.add(data)
-        service.exerciseDataFile.writer().use {
-            service.gson.toJson(
-                service.exerciseData, it
-            )
-        }
+        service.saveData()
         return RedirectView("/view")
+    }
+
+    @PostMapping("/reset")
+    fun resetData(
+        @RequestParam(name = "resetPassword") resetPassword: String
+    ): RedirectView {
+        if (resetPassword == "reset") service.resetData()
+        return RedirectView("/")
     }
 }

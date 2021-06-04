@@ -27,11 +27,12 @@
             title="Total Progress Map"></iframe>
 </div>
 <p th:text="'Total effective personal distance: ' + ${totalIndividualDistance} + '/' + ${individualRouteDistanceMiles}"></p>
+<p th:text="'Total effective family distance: ' + ${totalFamilyDistance}"></p>
 <ul>
     <li th:each="current: ${data}">
         <p th:text="${current.type.readableName} + ' on ' + ${current.date}"></p>
         <p th:text="${current.distance} + ' miles in ' + ${current.duration} + ' minutes.'"></p>
-        <p th:text="${current.weightedDistance} + ' miles effective distance.'"</p>
+        <p th:text="${current.weightedDistance} + ' miles effective distance.'"></p>
         <p>
         <form method="get" th:action="'/delete/' + ${current.id}"><input type="submit" value="Delete"></form>
         </p>

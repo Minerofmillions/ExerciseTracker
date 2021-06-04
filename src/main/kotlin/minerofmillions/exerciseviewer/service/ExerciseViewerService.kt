@@ -35,9 +35,11 @@ class ExerciseViewerService {
 
     final val individualRouteJSON: GeoJSON
     final val individualRouteToDistance: MutableTimeMap<Int, GeoJSON> = mutableTimeMapOf()
+    final val individualRouteDistance: Int
 
     final val totalRouteJSON: GeoJSON
     final val totalRouteToDistance: MutableTimeMap<Int, GeoJSON> = mutableTimeMapOf()
+    final val totalRouteDistance: Int
 
     private val s3 = S3Client.builder().region(Region.US_EAST_1).build()
 
@@ -107,24 +109,15 @@ class ExerciseViewerService {
             gson.fromJson(it, Response::class.java)
         }
         individualRouteJSON = parseResponse(individualResponse, individualRouteToDistance)
+        individualRouteDistance = individualResponse.routes[0].legs.sumBy { it.distance.value }
 
         val totalResponse = File("totalResponse.json").reader().use {
             gson.fromJson(it, Response::class.java)
         }
         totalRouteJSON = parseResponse(totalResponse, totalRouteToDistance)
+        totalRouteDistance = totalResponse.routes[0].legs.sumBy { it.distance.value }
 
         getDataFromS3()
-//        if (!exerciseDataFile.exists()) {
-//            exerciseDataFile.createNewFile()
-//            exerciseDataFile.writeText("[]")
-//        }
-//        exerciseData.addAll(
-//            gson.fromJson(
-//                exerciseDataFile.reader(),
-//                ExerciseDataListTypeToken.type
-//            ) ?: emptyList()
-//        )
-
     }
 
     private fun parseResponse(response: Response, routeToDistance: MutableTimeMap<Int, GeoJSON>): GeoJSON {

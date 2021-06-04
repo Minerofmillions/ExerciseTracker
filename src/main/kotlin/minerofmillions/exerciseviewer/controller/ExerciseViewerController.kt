@@ -3,6 +3,7 @@ package minerofmillions.exerciseviewer.controller
 import minerofmillions.exerciseviewer.entities.ExerciseData
 import minerofmillions.exerciseviewer.entities.Person
 import minerofmillions.exerciseviewer.service.ExerciseViewerService
+import minerofmillions.exerciseviewer.util.round
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -37,6 +38,8 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         model.addAttribute("data", service.exerciseDataByPerson[person] ?: emptyList<ExerciseData>())
         model.addAttribute("totalIndividualDistance", service.getDistanceOf(person))
         model.addAttribute("totalFamilyDistance", service.getTotalDistance())
+        model.addAttribute("individualRouteDistanceMeters", service.individualRouteDistance)
+        model.addAttribute("individualRouteDistanceMiles", round(service.individualRouteDistance / 1609.34, 2))
         return "view"
     }
 

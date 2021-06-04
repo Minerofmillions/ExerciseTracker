@@ -14,7 +14,8 @@ class Route(
 class RouteLeg(
     @Expose var steps: List<RouteStep>,
     @Expose var start_location: Coordinate,
-    @Expose var end_location: Coordinate
+    @Expose var end_location: Coordinate,
+    @Expose var distance: Distance
 )
 
 class RouteStep(

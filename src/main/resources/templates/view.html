@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Exercise Viewer</title>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-  <link href="/resources/style.css" rel="stylesheet"/>
+    <title>Exercise Viewer</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/resources/style.css" rel="stylesheet"/>
 </head>
 <body>
 <h1 th:text="'Welcome, ' + ${name} + '!'"></h1>
@@ -12,13 +12,13 @@
         title="Individual Progress Map"></iframe>
 <iframe class="map" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
         title="Total Progress Map"></iframe>
-<p th:text="'Total personal distance: ' + ${totalIndividualDistance}"></p>
-<p th:text="'Total family distance: ' + ${totalFamilyDistance}"></p>
+<p th:text="'Total personal distance: ' + ${totalIndividualDistance} + '/' + ${individualRouteDistanceMiles}"></p>
+<!--<p th:text="'Total family distance: ' + ${totalFamilyDistance}"></p>-->
 <ul>
-  <li th:each="current: ${data}">
-    <p th:text="${current.type.readableName} + ' on ' + ${current.date}"></p>
-    <p th:text="${current.distance} + ' miles in ' + ${current.duration} + ' minutes.'"></p>
-  </li>
+    <li th:each="current: ${data}">
+        <p th:text="${current.type.readableName} + ' on ' + ${current.date}"></p>
+        <p th:text="${current.distance} + ' miles in ' + ${current.duration} + ' minutes.'"></p>
+    </li>
 </ul>
 </body>
 </html>

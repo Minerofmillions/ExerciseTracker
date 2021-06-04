@@ -10,15 +10,22 @@
         }
 
 
+
     </script>
 </head>
 <body>
 <h1 th:text="'Welcome, ' + ${name} + '!'"></h1>
 <h2><a href="/add">Log exercise data</a><br/><a href="/">Choose a different family member</a></h2>
-<iframe class="map" id="individualMap" src="/map.html?type=individual&mapName=Individual%20Progress"
-        title="Individual Progress Map"></iframe>
-<iframe class="map" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
-        title="Total Progress Map"></iframe>
+<div class="map">
+    <h4>Individual Progress Map</h4>
+    <iframe class="full" id="individualMap" src="/map.html?type=individual&mapName=Individual%20Progress"
+            title="Individual Progress Map"></iframe>
+</div>
+<div class="map">
+    <h4>Family Progress Map</h4>
+    <iframe class="full" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
+            title="Total Progress Map"></iframe>
+</div>
 <p th:text="'Total effective personal distance: ' + ${totalIndividualDistance} + '/' + ${individualRouteDistanceMiles}"></p>
 <ul>
     <li th:each="current: ${data}">

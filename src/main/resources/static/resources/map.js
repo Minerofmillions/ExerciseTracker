@@ -41,7 +41,7 @@ function preload() {
 }
 
 function setup() {
-  canvas = createCanvas(windowWidth, 500);
+  canvas = createCanvas(windowWidth, windowHeight);
   if (qd.type == "individual") {
     myMap = mappa.tileMap(individualOptions);
   } else if (qd.type == "total") {
@@ -53,8 +53,6 @@ function setup() {
   progressCoordinates = myMap.geoJSON(progress, "LineString").flatMap(trip => trip);
 
   myMap.onChange(drawPoints);
-
-  document.getElementById('mapName').innerHTML = qd.mapName;
 }
 
 function drawPoints(){
@@ -73,8 +71,4 @@ function drawPoints(){
   let start = progressCoordinates[0];
   let startPos = myMap.latLngToPixel(start.lat, start.lng);
   ellipse(startPos.x, startPos.y, 7, 7);
-}
-
-function windowResized() {
-    resizeCanvas(windowWidth, 500);
 }

@@ -60,8 +60,7 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         @RequestParam(name = "durationMinute") durationMin: Int
     ): RedirectView {
         data.duration = durationHour * 60 + durationMin
-        service.exerciseData.add(data)
-        service.saveData()
+        service.add(data)
         return RedirectView("/view")
     }
 
@@ -71,5 +70,11 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
     ): RedirectView {
         if (resetPassword == "reset") service.resetData()
         return RedirectView("/")
+    }
+
+    @GetMapping("/delete/{id}")
+    fun deleteData(@PathVariable id: Int): RedirectView {
+        service.delete(id)
+        return RedirectView("/view")
     }
 }

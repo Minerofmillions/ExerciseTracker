@@ -28,7 +28,7 @@ class ExerciseViewerService {
         .registerTypeAdapter(Position::class.java, Position.Serializer)
         .create()
     final val exerciseDataFile = File("data.json")
-    final val exerciseData = mutableListOf<ExerciseData>()
+    private val exerciseData = mutableListOf<ExerciseData>()
 
     val exerciseDataByPerson
         get() = exerciseData.groupBy { it.person }
@@ -40,6 +40,9 @@ class ExerciseViewerService {
     final val totalRouteJSON: GeoJSON
     final val totalRouteToDistance: MutableTimeMap<Int, GeoJSON> = mutableTimeMapOf()
     final val totalRouteDistance: Int
+
+    private val latestId: Int
+        get() = exerciseData.maxOfOrNull { it.id } ?: 0
 
     private val s3 = S3Client.builder().region(Region.US_EAST_1).build()
 
@@ -164,18 +167,6 @@ class ExerciseViewerService {
 
     private object ExerciseDataListTypeToken : TypeToken<List<ExerciseData>>()
 
-    private fun getFeature(route: Route) = Feature(
-        null,
-        LineString(mutableListOf(Position(route.legs[0].start_location)).apply {
-            addAll(route.legs.flatMap { leg ->
-                leg.steps.flatMap {
-                    val positions = getPositions(it)
-                    positions.map { pos -> pos.first }
-                }
-            })
-        })
-    )
-
     private fun getPositions(step: RouteStep): List<Pair<Position, Int>> {
         val dLat = step.end_location.lat - step.start_location.lat
         val dLng = step.end_location.lng - step.start_location.lng
@@ -188,12 +179,16 @@ class ExerciseViewerService {
         }
     }
 
-    private fun positionsToFeatureCollection(route: List<Position>): FeatureCollection =
-        FeatureCollection(
-            listOf(
-                Feature(null, LineString(route))
-            )
-        )
+    fun add(data: ExerciseData) {
+        data.id = latestId + 1
+        exerciseData.add(data)
+        saveData()
+    }
+
+    fun delete(id: Int) {
+        exerciseData.removeIf { it.id == id }
+        saveData()
+    }
 }
 
 

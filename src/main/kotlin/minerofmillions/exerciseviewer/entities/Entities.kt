@@ -13,6 +13,8 @@ data class ExerciseData(
     val weightedDistance: Double
         get() = max(distance, duration / 5.0)
 
+    var id = -1
+
     enum class ExerciseType(val readableName: String) {
         BIKING("Biking"),
         WALKING("Walking"),

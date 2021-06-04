@@ -4,6 +4,13 @@
     <title>Exercise Viewer</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link href="/resources/style.css" rel="stylesheet"/>
+    <script>
+        function deleteData(id) {
+            alert("Deleting data #" + id)
+        }
+
+
+    </script>
 </head>
 <body>
 <h1 th:text="'Welcome, ' + ${name} + '!'"></h1>
@@ -12,12 +19,15 @@
         title="Individual Progress Map"></iframe>
 <iframe class="map" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
         title="Total Progress Map"></iframe>
-<p th:text="'Total personal distance: ' + ${totalIndividualDistance} + '/' + ${individualRouteDistanceMiles}"></p>
-<!--<p th:text="'Total family distance: ' + ${totalFamilyDistance}"></p>-->
+<p th:text="'Total effective personal distance: ' + ${totalIndividualDistance} + '/' + ${individualRouteDistanceMiles}"></p>
 <ul>
     <li th:each="current: ${data}">
         <p th:text="${current.type.readableName} + ' on ' + ${current.date}"></p>
         <p th:text="${current.distance} + ' miles in ' + ${current.duration} + ' minutes.'"></p>
+        <p th:text="${current.weightedDistance} + ' miles effective distance.'"</p>
+        <p>
+        <form method="get" th:action="'/delete/' + ${current.id}"><input type="submit" value="Delete"></form>
+        </p>
     </li>
 </ul>
 </body>

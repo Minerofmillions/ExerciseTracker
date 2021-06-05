@@ -40,17 +40,10 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         model.addAttribute("totalFamilyDistance", service.getTotalDistance())
         model.addAttribute("individualRouteDistanceMeters", service.individualRouteDistance)
         model.addAttribute("individualRouteDistanceMiles", round(service.individualRouteDistance / 1609.34, 2))
-        return "view"
-    }
-
-    @GetMapping("/add")
-    fun addData(@CookieValue(name = "name") name: String, model: Model): String {
-        val person = Person.valueOf(name)
-        model.addAttribute("name", person.realName)
         model.addAttribute("person", name)
         model.addAttribute("exerciseData", ExerciseData(person))
         model.addAttribute("exerciseTypes", ExerciseData.ExerciseType.values())
-        return "add_data"
+        return "view"
     }
 
     @PostMapping("/add")

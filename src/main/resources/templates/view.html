@@ -31,11 +31,13 @@
     </div>
 </div>
 <div class="row">
-    <div class="col">
-        <h4>Individual Progress</h4>
+    <div class="col" th:with="percentage = ${totalIndividualDistance * 100 / individualRouteDistanceMiles}">
+
+        <h4 th:text="'Individual Progress - ' +${totalIndividualDistance} + ' miles of '+ ${individualRouteDistanceMiles}
+            + ' (' + ${#numbers.formatDecimal(percentage,1,2)} + '%)'"> </h4>
     </div>
     <div class="col">
-        <h4>Family Progress</h4>
+        <h4 th:text="'Family Progress - ' + ${totalFamilyDistance}+' miles'"></h4>
     </div>
 </div>
 <div class="row">
@@ -48,27 +50,32 @@
                 title="Total Progress Map"></iframe>
     </div>
 </div>
-<div class="row">
-    <div class="col fs-4">
-        <p th:text="'Total effective personal distance: ' + ${totalIndividualDistance} + '/' + ${individualRouteDistanceMiles}"></p>
-    </div>
-    <div class="col fs-4">
-        <p th:text="'Total effective family distance: ' + ${totalFamilyDistance}"></p>
-    </div>
+
+<div class="container">
+<table class="table mb-5">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Activity</th>
+        <th class="text-end">Miles</th>
+        <th class="text-end">Time</th>
+        <th class="text-end">Effective Miles</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="current: ${data}">
+        <td th:text="${current.formattedDate}"></td>
+        <td th:text="${current.type.readableName}"></td>
+        <td class="text-end" th:text="${current.distance}"></td>
+        <td class="text-end" th:text="${current.formattedTime}"></td>
+        <td class="text-end"th:text="${current.weightedDistance}"></td>
+        <td class="text-center"><a class="btn btn-primary" th:href="'/delete/' + ${current.id}">Delete</a></td>
+    </tr>
+    </tbody>
+</table>
 </div>
-
-
-<ul>
-    <li th:each="current: ${data}">
-        <p th:text="${current.type.readableName} + ' on ' + ${current.date}"></p>
-        <p th:text="${current.distance} + ' miles in ' + ${current.duration} + ' minutes.'"></p>
-        <p th:text="${current.weightedDistance} + ' miles effective distance.'"></p>
-        <p>
-            <a class="btn btn-primary" th:href="'/delete/' + ${current.id}">Delete</a>
-        </p>
-    </li>
-</ul>
-<div id="ModalAddData" class="modal fade" data-bs-backdrop="static" >
+<div id="ModalAddData" class="modal fade" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

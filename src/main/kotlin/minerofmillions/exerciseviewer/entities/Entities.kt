@@ -14,6 +14,11 @@ data class ExerciseData(
         get() = max(distance, duration / 5.0)
 
     var id = -1
+    val formattedDate
+        get() = "${date.substring(5, 7)}/${date.substring(8, 10)}/${date.substring(0, 4)}"
+
+    val formattedTime
+        get() = "%2d:%02d".format(duration / 60, duration % 60)
 
     enum class ExerciseType(val readableName: String) {
         BIKING("Biking"),

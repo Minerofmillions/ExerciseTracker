@@ -14,72 +14,73 @@
     </script>
 </head>
 <body>
-
-<div class="row">
-    <div class="col fs-1 fw-bolder text-secondary text-center"><p class="" th:text="'Welcome, ' + ${name} + '!'"></p>
-    </div>
-</div>
-
-<div class="row mb-2">
-    <div class="col">
-        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#ModalAddData">
-            Log new exercise data
-        </button>
-    </div>
-    <div class="col text-end">
-        <p class="fs-3"><a href="/">Choose a different family member</a></p>
-    </div>
-</div>
-<div class="row">
-    <div class="col" th:with="percentage = ${totalIndividualDistance * 100 / individualRouteDistanceMiles}">
-
-        <h4 th:text="'Individual Progress - ' +${totalIndividualDistance} + ' miles of '+ ${individualRouteDistanceMiles}
-            + ' (' + ${#numbers.formatDecimal(percentage,1,2)} + '%)'"> </h4>
-    </div>
-    <div class="col">
-        <h4 th:text="'Family Progress - ' + ${totalFamilyDistance}+' miles'"></h4>
-    </div>
-</div>
-<div class="row">
-    <div class="map col-6">
-        <iframe class="full" id="individualMap" src="/map.html?type=individual&mapName=Individual%20Progress"
-                title="Individual Progress Map"></iframe>
-    </div>
-    <div class="map col-6">
-        <iframe class="full" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
-                title="Total Progress Map"></iframe>
-    </div>
-</div>
-
 <div class="container">
-<table class="table mb-5">
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>Activity</th>
-        <th class="text-end">Miles</th>
-        <th class="text-end">Time</th>
-        <th class="text-end">Effective Miles</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="current: ${data}">
-        <td th:text="${current.formattedDate}"></td>
-        <td th:text="${current.type.readableName}"></td>
-        <td class="text-end" th:text="${current.distance}"></td>
-        <td class="text-end" th:text="${current.formattedTime}"></td>
-        <td class="text-end"th:text="${current.weightedDistance}"></td>
-        <td class="text-center"><a class="btn btn-primary" th:href="'/delete/' + ${current.id}">Delete</a></td>
-    </tr>
-    </tbody>
-</table>
+
+    <div class="row">
+        <div class="col fs-1 fw-bolder text-primary text-center"><p class=""
+                                                                      th:text="'Welcome, ' + ${name} + '!'"></p>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col">
+            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#ModalAddData">
+                Log new exercise data
+            </button>
+        </div>
+        <div class="col text-end">
+            <p class="fs-3"><a href="/">Choose a different family member</a></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" th:with="percentage = ${totalIndividualDistance * 100 / individualRouteDistanceMiles}">
+
+            <h4 th:text="'Individual Progress - ' +${totalIndividualDistance} + ' miles of '+ ${individualRouteDistanceMiles}
+            + ' (' + ${#numbers.formatDecimal(percentage,1,2)} + '%)'"></h4>
+        </div>
+        <div class="col">
+            <h4 th:text="'Family Progress - ' + ${totalFamilyDistance}+' miles'"></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="map col">
+            <iframe class="full" id="individualMap" src="/map.html?type=individual&mapName=Individual%20Progress"
+                    title="Individual Progress Map"></iframe>
+        </div>
+        <div class="map col">
+            <iframe class="full" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
+                    title="Total Progress Map"></iframe>
+        </div>
+    </div>
+
+    <table class="table mb-5">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Activity</th>
+            <th class="text-end">Miles</th>
+            <th class="text-end">Time</th>
+            <th class="text-end">Effective Miles</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="current: ${data}">
+            <td th:text="${current.formattedDate}"></td>
+            <td th:text="${current.type.readableName}"></td>
+            <td class="text-end" th:text="${current.distance}"></td>
+            <td class="text-end" th:text="${current.formattedTime}"></td>
+            <td class="text-end" th:text="${current.weightedDistance}"></td>
+            <td class="text-center"><a class="btn btn-primary" th:href="'/delete/' + ${current.id}">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div id="ModalAddData" class="modal fade" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title">New Exercise Record</h1>
+                <h1 class="modal-title text-primary">New Exercise Record</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

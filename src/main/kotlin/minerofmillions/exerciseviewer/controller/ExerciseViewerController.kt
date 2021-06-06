@@ -35,29 +35,24 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
     fun viewData(@CookieValue(name = "name") name: String, model: Model): String {
         val person = Person.valueOf(name)
         model.addAttribute("name", person.realName)
-        model.addAttribute("data", service.exerciseDataByPerson[person] ?: emptyList<ExerciseData>())
+        model.addAttribute(
+            "data",
+            service.exerciseDataByPerson[person]?.sortedByDescending { it.date } ?: emptyList<ExerciseData>())
         model.addAttribute("totalIndividualDistance", service.getDistanceOf(person))
         model.addAttribute("totalFamilyDistance", service.getTotalDistance())
         model.addAttribute("individualRouteDistanceMeters", service.individualRouteDistance)
         model.addAttribute("individualRouteDistanceMiles", round(service.individualRouteDistance / 1609.34, 2))
-        return "view"
-    }
-
-    @GetMapping("/add")
-    fun addData(@CookieValue(name = "name") name: String, model: Model): String {
-        val person = Person.valueOf(name)
-        model.addAttribute("name", person.realName)
         model.addAttribute("person", name)
         model.addAttribute("exerciseData", ExerciseData(person))
         model.addAttribute("exerciseTypes", ExerciseData.ExerciseType.values())
-        return "add_data"
+        return "view"
     }
 
     @PostMapping("/add")
     fun submitData(
         @ModelAttribute(name = "exerciseData") data: ExerciseData,
-        @RequestParam(name = "durationHour") durationHour: Int,
-        @RequestParam(name = "durationMinute") durationMin: Int
+        @RequestParam(name = "durationHour", defaultValue = "0") durationHour: Int,
+        @RequestParam(name = "durationMinute", defaultValue = "0") durationMin: Int
     ): RedirectView {
         data.duration = durationHour * 60 + durationMin
         service.add(data)

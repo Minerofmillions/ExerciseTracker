@@ -2,41 +2,155 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Exercise Viewer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.0.1/css/bootstrap.min.css"/>
     <link href="/resources/style.css" rel="stylesheet"/>
     <script>
         function deleteData(id) {
             alert("Deleting data #" + id)
         }
-
-
-
     </script>
 </head>
 <body>
-<h1 th:text="'Welcome, ' + ${name} + '!'"></h1>
-<h2><a href="/add">Log exercise data</a><br/><a href="/">Choose a different family member</a></h2>
-<div class="map">
-    <h4>Individual Progress Map</h4>
-    <iframe class="full" id="individualMap" src="/map.html?type=individual&mapName=Individual%20Progress"
-            title="Individual Progress Map"></iframe>
+
+<div class="row">
+    <div class="col fs-1 fw-bolder text-secondary text-center"><p class="" th:text="'Welcome, ' + ${name} + '!'"></p>
+    </div>
 </div>
-<div class="map">
-    <h4>Family Progress Map</h4>
-    <iframe class="full" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
-            title="Total Progress Map"></iframe>
+
+<div class="row mb-2">
+    <div class="col">
+        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#ModalAddData">
+            Log new exercise data
+        </button>
+    </div>
+    <div class="col text-end">
+        <p class="fs-3"><a href="/">Choose a different family member</a></p>
+    </div>
 </div>
-<p th:text="'Total effective personal distance: ' + ${totalIndividualDistance} + '/' + ${individualRouteDistanceMiles}"></p>
-<p th:text="'Total effective family distance: ' + ${totalFamilyDistance}"></p>
-<ul>
-    <li th:each="current: ${data}">
-        <p th:text="${current.type.readableName} + ' on ' + ${current.date}"></p>
-        <p th:text="${current.distance} + ' miles in ' + ${current.duration} + ' minutes.'"></p>
-        <p th:text="${current.weightedDistance} + ' miles effective distance.'"></p>
-        <p>
-        <form method="get" th:action="'/delete/' + ${current.id}"><input type="submit" value="Delete"></form>
-        </p>
-    </li>
-</ul>
+<div class="row">
+    <div class="col" th:with="percentage = ${totalIndividualDistance * 100 / individualRouteDistanceMiles}">
+
+        <h4 th:text="'Individual Progress - ' +${totalIndividualDistance} + ' miles of '+ ${individualRouteDistanceMiles}
+            + ' (' + ${#numbers.formatDecimal(percentage,1,2)} + '%)'"> </h4>
+    </div>
+    <div class="col">
+        <h4 th:text="'Family Progress - ' + ${totalFamilyDistance}+' miles'"></h4>
+    </div>
+</div>
+<div class="row">
+    <div class="map col-6">
+        <iframe class="full" id="individualMap" src="/map.html?type=individual&mapName=Individual%20Progress"
+                title="Individual Progress Map"></iframe>
+    </div>
+    <div class="map col-6">
+        <iframe class="full" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
+                title="Total Progress Map"></iframe>
+    </div>
+</div>
+
+<div class="container">
+<table class="table mb-5">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Activity</th>
+        <th class="text-end">Miles</th>
+        <th class="text-end">Time</th>
+        <th class="text-end">Effective Miles</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="current: ${data}">
+        <td th:text="${current.formattedDate}"></td>
+        <td th:text="${current.type.readableName}"></td>
+        <td class="text-end" th:text="${current.distance}"></td>
+        <td class="text-end" th:text="${current.formattedTime}"></td>
+        <td class="text-end"th:text="${current.weightedDistance}"></td>
+        <td class="text-center"><a class="btn btn-primary" th:href="'/delete/' + ${current.id}">Delete</a></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<div id="ModalAddData" class="modal fade" data-bs-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title">New Exercise Record</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/add" method="POST" th:object="${exerciseData}">
+                    <div class="mb-3">
+                        <label for="type" class="col-3 col-form-label">Type</label>
+                        <select class="form-select" id="type" onkeypress="return checkEnter(event)" th:field="*{type}">
+                            <option th:each="exerciseType: ${exerciseTypes}" th:text="${exerciseType.readableName}"
+                                    th:value="${exerciseType}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="col-3 col-form-label">Date</label>
+                        <input class="form-control" id="date" onkeypress="return checkEnter(event)" th:field="*{date}"
+                               type="date"
+                               min="2021-06-01"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="distance" class="col-3 col-form-label">Distance</label>
+                        <input class="form-control" id="distance" onchange="roundDistance(this)"
+                               onkeypress="return checkEnter(event)"
+                               th:field="*{distance}"
+                               type="number" min="0" max="100" step="any" value="0"/>
+                    </div>
+                    <div class="row">
+                        <label for="durationHour" class="col col-form-label">Duration Hours</label>
+                        <label class="col col-form-label ms-1" for="durationMinute">Minutes</label>
+                    </div>
+                    <div class="row mb-3">
+                        <input class="col form-control" id="durationHour" name="durationHour"
+                               onkeypress="return checkEnter(event)"
+                               type="number" max="24" min="0" step="1" value="0"/>
+                        <input class="col form-control ms-1" id="durationMinute" name="durationMinute"
+                               onkeypress="return checkEnter(event)"
+                               type="number" max="60" min="0" step="1" value="00"/>
+                    </div>
+                    <div class="pt-3 text-center">
+                        <input type="submit" value="Log this exercise data">
+                    </div>
+                    <input th:field="*{person}" th:value="${person}" type="hidden"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/webjars/bootstrap/5.0.1/js/bootstrap.bundle.min.js"></script>
+<script>
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("date").setAttribute("max", today);
+
+    function roundDistance(field) {
+        console.log(field.value);
+        var oldValue = parseFloat(field.value);
+        field.value = oldValue.toFixed(2);
+    }
+
+    function checkEnter(event) {
+        return event.keyCode != 13
+    }
+
+</script>
 </body>
 </html>

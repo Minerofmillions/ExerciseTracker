@@ -44,11 +44,13 @@ function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
   if (qd.type == "individual") {
     myMap = mappa.tileMap(individualOptions);
+
   } else if (qd.type == "total") {
     myMap = mappa.tileMap(totalOptions)
   }
-  myMap.overlay(canvas);
-
+  myMap.overlay(canvas, function() {
+    myMap.map.scrollWheelZoom.disable();
+  });
   routeCoordinates = myMap.geoJSON(data, "LineString").flatMap(trip => trip);
   progressCoordinates = myMap.geoJSON(progress, "LineString").flatMap(trip => trip);
 

@@ -3,7 +3,8 @@
 <head>
   <title>Exercise Viewer - Log In</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  
+  <link rel="stylesheet" href="/webjars/bootstrap/5.0.1/css/bootstrap.min.css"/>
+
   <style>
       body {
           font-size: 125%;
@@ -59,7 +60,7 @@
 </head>
 <body>
 <div class="content centered">
-  <h1 style="color: white; text-align: center">Crabb Family Exercise Challenge</h1>
+  <h1 class="text-center" style="color: white; margin: 1em;">Crabb Family Exercise Challenge</h1>
   <div style="display: flex; justify-content: space-around">
     <div>
       <span class="groupHeader">Parents</span>
@@ -92,7 +93,7 @@
       </ul>
     </div>
   </div>
-  <h2 style="color: white; text-align: center">Click a name to view/update their progress</h2>
+  <h2 style="color: white; text-align: center; margin: 1em;">Click a name to view/update their progress</h2>
 </div>
 <form id="nameForm" action="/view" method="post">
   <input type="hidden" name="name"/>

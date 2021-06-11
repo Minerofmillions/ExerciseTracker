@@ -23,7 +23,9 @@ data class ExerciseData(
     enum class ExerciseType(val readableName: String) {
         BIKING("Biking"),
         WALKING("Walking"),
-        RUNNING("Running")
+        RUNNING("Running"),
+        CARDIO("Cardio"),
+        WEIGHTLIFTING("Weightlifting"),
     }
 }
 

@@ -39,7 +39,7 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
             "data",
             service.exerciseDataByPerson[person]?.sortedByDescending { it.date } ?: emptyList<ExerciseData>())
         model.addAttribute("totalIndividualDistance", service.getDistanceOf(person))
-        model.addAttribute("totalFamilyDistance", service.getTotalDistance())
+        model.addAttribute("totalFamilyDistance", service.getFamilyDistance())
         model.addAttribute("individualRouteDistanceMeters", service.individualRouteDistance)
         model.addAttribute("individualRouteDistanceMiles", round(service.individualRouteDistance / 1609.34, 2))
         model.addAttribute("person", name)

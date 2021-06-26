@@ -18,8 +18,7 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import java.io.File
 import java.util.*
-import kotlin.math.ceil
-import kotlin.math.roundToInt
+import kotlin.math.*
 
 @Service
 class ExerciseViewerService {
@@ -35,12 +34,48 @@ class ExerciseViewerService {
         get() = exerciseData.groupBy { it.person }
 
     final val individualRouteJSON: GeoJSON
-    final val individualRouteToDistance: MutableTimeMap<Int, GeoJSON> = mutableTimeMapOf()
+    final val individualRouteToDistance: MutableTimeMap<Int, FeatureCollection> = mutableTimeMapOf()
     final val individualRouteDistance: Int
+    private val individualResponse: Response = File("individualResponse.json").reader().use {
+        gson.fromJson(it, Response::class.java)
+    }
+    final val individualMapOptions: Map<String, Any> = mapOf(
+        "lat" to 32.04526885,
+        "lng" to -80.1408972,
+        "zoom" to 6,
+        "style" to "http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+    )
 
-    final val totalRouteJSON: GeoJSON
-    final val totalRouteToDistance: MutableTimeMap<Int, GeoJSON> = mutableTimeMapOf()
-    final val totalRouteDistance: Int
+    final val familyRouteJSON: GeoJSON
+    final val familyRouteToDistance: MutableTimeMap<Int, FeatureCollection> = mutableTimeMapOf()
+    final val familyRouteDistance: Int
+    private val familyResponse: Response = File("totalResponse.json").reader().use {
+        gson.fromJson(it, Response::class.java)
+    }
+    final val familyMapOptions: Map<String, Any>
+        get() = getOptionsFromRoute(familyRouteToDistance[(getFamilyDistance() * 1609.34).roundToInt()]!!)
+
+    final val testMapOptions: Map<String, Any>
+        get() = getOptionsFromRoute(familyRouteJSON)
+
+    private fun zoom(latitude: Double, altitude: Double) =
+        log2(27.3611 * 3671010 * 768 * cos(PI * latitude / 180) / (altitude * 256))
+
+    private fun getOptionsFromRoute(route: GeoJSON): Map<String, Any> {
+        val bbox = route.bbox!!
+        val avgLat = (bbox[0] + bbox[2]) / 2
+        val avgLng = (bbox[1] + bbox[3]) / 2
+
+        val dLat = bbox[2] - bbox[0]
+        val dLng = bbox[3] - bbox[1]
+
+        return mapOf(
+            "lat" to avgLat,
+            "lng" to avgLng,
+            "zoom" to zoom(avgLat, 236262.09493654885 * dLng * 1.75).roundToInt(),
+            "style" to "http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+        )
+    }
 
     private val latestId: Int
         get() = exerciseData.maxOfOrNull { it.id } ?: 0
@@ -104,27 +139,21 @@ class ExerciseViewerService {
         )
     }
 
-    internal fun getTotalDistance() = exerciseData.sumByDouble { it.weightedDistance }
+    internal fun getFamilyDistance() = exerciseData.sumByDouble { it.weightedDistance }
     internal fun getDistanceOf(person: Person) =
         (exerciseDataByPerson[person] ?: emptyList()).sumByDouble { it.weightedDistance }
 
     init {
-        val individualResponse = File("individualResponse.json").reader().use {
-            gson.fromJson(it, Response::class.java)
-        }
         individualRouteJSON = parseResponse(individualResponse, individualRouteToDistance)
         individualRouteDistance = individualResponse.routes[0].legs.sumBy { it.distance.value }
 
-        val totalResponse = File("totalResponse.json").reader().use {
-            gson.fromJson(it, Response::class.java)
-        }
-        totalRouteJSON = parseResponse(totalResponse, totalRouteToDistance)
-        totalRouteDistance = totalResponse.routes[0].legs.sumBy { it.distance.value }
+        familyRouteJSON = parseResponse(familyResponse, familyRouteToDistance)
+        familyRouteDistance = familyResponse.routes[0].legs.sumBy { it.distance.value }
 
         getDataFromS3()
     }
 
-    private fun parseResponse(response: Response, routeToDistance: MutableTimeMap<Int, GeoJSON>): GeoJSON {
+    private fun parseResponse(response: Response, routeToDistance: MutableTimeMap<Int, FeatureCollection>): GeoJSON {
         val route = response.routes[0]
 
         val positions = route.legs.flatMap { leg ->
@@ -133,28 +162,37 @@ class ExerciseViewerService {
             }
         }
 
+        val startLocation = route.legs.first().start_location
         routeToDistance[0] = FeatureCollection(
             listOf(
                 Feature(
                     null,
-                    LineString(listOf(Position(route.legs.first().start_location)))
+                    LineString(listOf(Position(startLocation)))
                 )
-            )
+            ),
+            listOf(startLocation.lat, startLocation.lng, startLocation.lat, startLocation.lng)
         )
         val fullRoute = mutableListOf<Position>()
         var fullDistance = 0
         positions.forEach { (pos, distance) ->
             fullDistance += distance
             fullRoute += pos
+            val minLat = fullRoute.minOf { it.lat }
+            val minLng = fullRoute.minOf { it.lng }
+            val maxLat = fullRoute.maxOf { it.lat }
+            val maxLng = fullRoute.maxOf { it.lng }
             routeToDistance[fullDistance] = FeatureCollection(
                 listOf(
                     Feature(
                         null,
                         LineString(fullRoute.toList())
                     )
-                )
+                ),
+                listOf(minLat, minLng, maxLat, maxLng)
             )
         }
+
+        val bounds = route.bounds
 
         return FeatureCollection(
             listOf(
@@ -162,7 +200,8 @@ class ExerciseViewerService {
                     null,
                     LineString(fullRoute)
                 )
-            )
+            ),
+            listOf(bounds.southwest.lat, bounds.southwest.lng, bounds.northeast.lat, bounds.northeast.lng)
         )
     }
 

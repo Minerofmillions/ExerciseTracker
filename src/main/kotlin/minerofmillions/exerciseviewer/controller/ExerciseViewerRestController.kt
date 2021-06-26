@@ -19,16 +19,32 @@ class ExerciseViewerRestController(val service: ExerciseViewerService) {
     @Cacheable("individualRoute")
     fun getIndividualRouteData(): GeoJSON = service.individualRouteJSON
 
-    @RequestMapping("/data/total/route")
+    @RequestMapping("/data/family/route")
     @Cacheable("totalRoute")
-    fun getTotalRouteData(): GeoJSON = emptyFeatureCollection()
+    fun getFamilyRouteData(): GeoJSON = emptyFeatureCollection()
+
+    @RequestMapping("/data/test/route")
+    @Cacheable("testRoute")
+    fun getTestRouteData(): GeoJSON = service.familyRouteJSON
 
     @RequestMapping("/data/individual/progress")
     fun getIndividualProgress(@CookieValue name: String): GeoJSON? =
         service.individualRouteToDistance[(service.getDistanceOf(Person.valueOf(name)) * 1609.34).roundToInt()]
 
-    @RequestMapping("/data/total/progress")
+    @RequestMapping("/data/family/progress")
     fun getTotalProgress(): GeoJSON? =
-        service.totalRouteToDistance[(service.getTotalDistance() * 1609.34).roundToInt()]
+        service.familyRouteToDistance[(service.getFamilyDistance() * 1609.34).roundToInt()]
 
+    @RequestMapping("/data/test/progress")
+    fun getTestProgress(): GeoJSON? =
+        service.familyRouteToDistance[(service.getFamilyDistance() * 1609.34).roundToInt()]
+
+    @RequestMapping("/data/individual/options")
+    fun getIndividualOptions() = service.individualMapOptions
+
+    @RequestMapping("/data/family/options")
+    fun getFamilyOptions() = service.familyMapOptions
+
+    @RequestMapping("/data/test/options")
+    fun getTestOptions() = service.testMapOptions
 }

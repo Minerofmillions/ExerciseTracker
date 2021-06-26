@@ -3,7 +3,7 @@ package minerofmillions.exerciseviewer.entities
 import com.google.gson.*
 import java.lang.reflect.Type
 
-sealed class GeoJSON(val type: String) {
+sealed class GeoJSON(val type: String, val bbox: List<Double>? = null) {
     object Serializer : JsonDeserializer<GeoJSON> {
         override fun deserialize(element: JsonElement, type: Type, context: JsonDeserializationContext): GeoJSON =
             context.deserialize(
@@ -24,8 +24,9 @@ sealed class GeoJSON(val type: String) {
     }
 }
 
-class FeatureCollection(val features: List<Feature>) : GeoJSON("FeatureCollection")
-class Feature(val properties: Map<String, Any>?, val geometry: Geometry?) : GeoJSON("Feature")
+class FeatureCollection(val features: List<Feature>, bbox: List<Double>? = null) : GeoJSON("FeatureCollection", bbox)
+class Feature(val properties: Map<String, Any>?, val geometry: Geometry?, bbox: List<Double>? = null) :
+    GeoJSON("Feature", bbox)
 
 fun emptyFeatureCollection() = FeatureCollection(emptyList())
 fun featureCollectionOf(vararg features: Feature) = FeatureCollection(features.toList())

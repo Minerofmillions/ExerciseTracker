@@ -16,6 +16,8 @@ let routeCoordinates;
 let progress;
 let progressCoordinates;
 
+let options;
+
 const individualOptions = {
   lat: 32.04526885,
   lng: -80.1408972,
@@ -31,23 +33,14 @@ const totalOptions = {
 const mappa = new Mappa('Leaflet');
 
 function preload() {
-  if (qd.type == "individual") {
-    data = loadJSON('/data/individual/route');
-    progress = loadJSON('/data/individual/progress');
-  } else if (qd.type == "total") {
-    data = loadJSON('/data/total/route');
-    progress = loadJSON('/data/total/progress');
-  }
+  data = loadJSON('/data/' + qd.type + '/route')
+  progress = loadJSON('/data/' + qd.type + '/progress');
+  options = loadJSON('/data/' + qd.type + '/options')
 }
 
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
-  if (qd.type == "individual") {
-    myMap = mappa.tileMap(individualOptions);
-
-  } else if (qd.type == "total") {
-    myMap = mappa.tileMap(totalOptions)
-  }
+  myMap = mappa.tileMap(options);
   myMap.overlay(canvas, function() {
     myMap.map.scrollWheelZoom.disable();
   });

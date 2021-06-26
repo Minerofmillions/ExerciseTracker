@@ -11,6 +11,7 @@
         function deleteData(id) {
             alert("Deleting data #" + id)
         }
+
     </script>
 </head>
 <body>
@@ -18,7 +19,7 @@
 
     <div class="row">
         <div class="col fs-1 fw-bolder text-primary text-center"><p class=""
-                                                                      th:text="'Welcome, ' + ${name} + '!'"></p>
+                                                                    th:text="'Welcome, ' + ${name} + '!'"></p>
         </div>
     </div>
 
@@ -34,7 +35,6 @@
     </div>
     <div class="row">
         <div class="col" th:with="percentage = ${totalIndividualDistance * 100 / individualRouteDistanceMiles}">
-
             <h4 th:text="'Individual Progress - ' +${totalIndividualDistance} + ' miles of '+ ${individualRouteDistanceMiles}
             + ' (' + ${#numbers.formatDecimal(percentage,1,2)} + '%)'"></h4>
         </div>
@@ -44,12 +44,12 @@
     </div>
     <div class="row">
         <div class="map col">
-            <iframe class="full" id="individualMap" src="/map.html?type=individual&mapName=Individual%20Progress"
+            <iframe class="full" id="individualMap" src="/map.html?type=individual"
                     title="Individual Progress Map"></iframe>
         </div>
         <div class="map col">
-            <iframe class="full" id="totalMap" src="/map.html?type=total&mapName=Total%20Progress"
-                    title="Total Progress Map"></iframe>
+            <iframe class="full" id="familyMap" src="/map.html?type=family"
+                    title="Family Progress Map"></iframe>
         </div>
     </div>
 
@@ -151,6 +151,7 @@
     function checkEnter(event) {
         return event.keyCode != 13
     }
+
 
 </script>
 </body>

@@ -19,6 +19,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import java.io.File
 import java.util.*
 import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 @Service
 class ExerciseViewerService {
@@ -171,11 +172,11 @@ class ExerciseViewerService {
         val dLat = step.end_location.lat - step.start_location.lat
         val dLng = step.end_location.lng - step.start_location.lng
         val numSteps = ceil(step.distance.value / 3218.69).toInt()
-        return (0 until numSteps).map {
+        return (1..numSteps).map {
             Position(
-                step.start_location.lat + (it + 1) * dLat / numSteps,
-                step.start_location.lng + (it + 1) * dLng / numSteps
-            ) to step.distance.value
+                step.start_location.lat + (it * dLat / numSteps),
+                step.start_location.lng + (it * dLng / numSteps)
+            ) to (step.distance.value.toDouble() / numSteps).roundToInt()
         }
     }
 
@@ -190,5 +191,3 @@ class ExerciseViewerService {
         saveData()
     }
 }
-
-

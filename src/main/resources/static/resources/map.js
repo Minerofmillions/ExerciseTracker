@@ -53,11 +53,11 @@ function setup() {
 function drawPoints(){
   clear()
   noStroke();
-  fill(255);
+  fill('rgba(127,127,127,0.25)');
   routeCoordinates.map(coord => myMap.latLngToPixel(coord.lat, coord.lng)).forEach(pos => {
     ellipse(pos.x, pos.y, 5, 5);
   });
-  fill(0, 255, 0);
+  fill('rgba(0,255,0,0.25)');
   progressCoordinates.map(coord => myMap.latLngToPixel(coord.lat, coord.lng)).forEach(pos => {
     ellipse(pos.x, pos.y, 5, 5);
   });

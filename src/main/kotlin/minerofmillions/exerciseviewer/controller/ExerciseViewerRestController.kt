@@ -2,7 +2,6 @@ package minerofmillions.exerciseviewer.controller
 
 import minerofmillions.exerciseviewer.entities.GeoJSON
 import minerofmillions.exerciseviewer.entities.Person
-import minerofmillions.exerciseviewer.entities.emptyFeatureCollection
 import minerofmillions.exerciseviewer.service.ExerciseViewerService
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.cache.annotation.EnableCaching
@@ -21,7 +20,7 @@ class ExerciseViewerRestController(val service: ExerciseViewerService) {
 
     @RequestMapping("/data/family/route")
     @Cacheable("totalRoute")
-    fun getFamilyRouteData(): GeoJSON = emptyFeatureCollection()
+    fun getFamilyRouteData(): GeoJSON? = getFamilyProgress()
 
     @RequestMapping("/data/test/route")
     @Cacheable("testRoute")
@@ -32,7 +31,7 @@ class ExerciseViewerRestController(val service: ExerciseViewerService) {
         service.individualRouteToDistance[(service.getDistanceOf(Person.valueOf(name)) * 1609.34).roundToInt()]
 
     @RequestMapping("/data/family/progress")
-    fun getTotalProgress(): GeoJSON? =
+    fun getFamilyProgress(): GeoJSON? =
         service.familyRouteToDistance[(service.getFamilyDistance() * 1609.34).roundToInt()]
 
     @RequestMapping("/data/test/progress")

@@ -7,12 +7,6 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link rel="stylesheet" href="/webjars/bootstrap/5.0.1/css/bootstrap.min.css"/>
     <link href="/resources/style.css" rel="stylesheet"/>
-    <script>
-        function deleteData(id) {
-            alert("Deleting data #" + id)
-        }
-
-    </script>
 </head>
 <body>
 <div class="container">
@@ -35,11 +29,11 @@
     </div>
     <div class="row">
         <div class="col" th:with="percentage = ${totalIndividualDistance * 100 / individualRouteDistanceMiles}">
-            <h4 th:text="'Individual Progress - ' +${totalIndividualDistance} + ' miles of '+ ${individualRouteDistanceMiles}
+            <h4 th:text="'Individual Progress - ' +${#numbers.formatDecimal(totalIndividualDistance,1,2)} + ' miles of '+ ${individualRouteDistanceMiles}
             + ' (' + ${#numbers.formatDecimal(percentage,1,2)} + '%)'"></h4>
         </div>
         <div class="col">
-            <h4 th:text="'Family Progress - ' + ${totalFamilyDistance}+' miles'"></h4>
+            <h4 th:text="'Family Progress - ' + ${#numbers.formatDecimal(totalFamilyDistance,1,2)}+' miles'"></h4>
         </div>
     </div>
     <div class="row">

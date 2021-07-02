@@ -14,6 +14,9 @@
     <div class="row">
         <h1 class="col text-center">Crabb Family Exercise Challenge</h1>
     </div>
+    <div class="row">
+        <p class="fs-2 col text-center" th:if="${personSelected}"><a href="/view">View your exercise data</a></p>
+    </div>
     <table class="container table table-striped table-bordered">
         <thead class="table-dark">
         <tr class="row">
@@ -24,7 +27,7 @@
         </thead>
         <tbody>
         <tr th:class="${person.cssClass} + ' row'" th:each="person: ${peopleStats}">
-            <td class="col-2" th:text="${person.name}"></td>
+            <td class="col-2"><a th:href="'/nameChosen?name=' + ${person.codeName}" th:text="${person.name}"></a></td>
             <td class="text-end col" th:text="${#numbers.formatDecimal(person.distance,1,2)} + ' miles'"></td>
             <td class="text-end col-2" th:text="${#numbers.formatDecimal(person.percentage,1,2)} + '%'"></td>
         </tr>

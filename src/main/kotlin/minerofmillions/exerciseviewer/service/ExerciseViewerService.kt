@@ -235,7 +235,8 @@ class ExerciseViewerService {
             person.realName,
             getDistanceOf(person),
             getDistanceOf(person) * 100 / getFamilyDistance(),
-            if (person.name == current) "table-active" else ""
+            if (person.name == current) "table-active" else "",
+            person.name
         )
     }
 }

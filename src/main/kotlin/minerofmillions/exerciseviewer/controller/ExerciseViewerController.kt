@@ -75,7 +75,10 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
 
     @GetMapping("/scoreboard")
     fun scoreboard(@CookieValue(name = "name", defaultValue = "") name: String, model: Model): String {
-        model.addAttribute("peopleStats", Person.values().map { service.getInformationOf(it, name) })
+        model.addAttribute(
+            "peopleStats",
+            Person.values().map { service.getInformationOf(it, name) }.sortedByDescending { it.distance })
+        model.addAttribute("personSelected", name != "")
         return "scoreboard"
     }
 }

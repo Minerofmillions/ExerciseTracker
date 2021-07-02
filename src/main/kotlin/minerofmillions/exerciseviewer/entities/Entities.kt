@@ -49,5 +49,6 @@ data class PersonData(
     val name: String,
     val distance: Double,
     val percentage: Double,
-    val cssClass: String
+    val cssClass: String,
+    val codeName: String
 )

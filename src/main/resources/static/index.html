@@ -23,11 +23,6 @@
             padding: 3px 10px 5px 20px;
         }
 
-        ul li:hover {
-            color: black;
-            background-color: #d5c4e4;
-        }
-
         .groupHeader {
             color: white;
             font-weight: bolder;
@@ -43,6 +38,7 @@
 
         a:hover {
             color: black;
+            background-color: #d5c4e4;
         }
     </style>
 
@@ -83,6 +79,8 @@
         </div>
     </div>
     <h2 style="color: white; text-align: center; margin: 1em;">Click a name to view/update their progress</h2>
+
+    <h3 style="color: white; text-align: center; margin: 1em;"><a href="/scoreboard">View the scoreboard</a></h3>
 </div>
 <form id="nameForm" action="/view" method="post">
     <input type="hidden" name="name"/>

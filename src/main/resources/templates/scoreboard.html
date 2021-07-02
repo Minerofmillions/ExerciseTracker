@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercise Viewer - Scoreboard</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/webjars/bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/resources/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h1 class="col text-center">Crabb Family Exercise Challenge</h1>
+    </div>
+    <table class="container table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr class="row">
+            <th class="col-2" scope="col">Name</th>
+            <th class="col text-end" scope="col">Distance</th>
+            <th class="col-2 text-end" scope="col">Percentage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:class="${person.cssClass} + ' row'" th:each="person: ${peopleStats}">
+            <td class="col-2" th:text="${person.name}"></td>
+            <td class="text-end col" th:text="${#numbers.formatDecimal(person.distance,1,2)} + ' miles'"></td>
+            <td class="text-end col-2" th:text="${#numbers.formatDecimal(person.percentage,1,2)} + '%'"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

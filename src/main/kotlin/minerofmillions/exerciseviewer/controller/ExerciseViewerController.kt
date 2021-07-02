@@ -72,4 +72,10 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         service.delete(id)
         return RedirectView("/view")
     }
+
+    @GetMapping("/scoreboard")
+    fun scoreboard(@CookieValue(name = "name", defaultValue = "") name: String, model: Model): String {
+        model.addAttribute("peopleStats", Person.values().map { service.getInformationOf(it, name) })
+        return "scoreboard"
+    }
 }

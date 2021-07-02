@@ -229,4 +229,13 @@ class ExerciseViewerService {
         exerciseData.removeIf { it.id == id }
         saveData()
     }
+
+    fun getInformationOf(person: Person, current: String = ""): PersonData {
+        return PersonData(
+            person.realName,
+            getDistanceOf(person),
+            getDistanceOf(person) * 100 / getFamilyDistance(),
+            if (person.name == current) "table-active" else ""
+        )
+    }
 }

@@ -44,3 +44,10 @@ enum class Person(val realName: String) {
     JASON("Jason"),
     ALEX("Alex")
 }
+
+data class PersonData(
+    val name: String,
+    val distance: Double,
+    val percentage: Double,
+    val cssClass: String
+)

@@ -100,7 +100,8 @@
                         <input class="form-control" id="distance" onchange="roundDistance(this)"
                                onkeypress="return checkEnter(event)"
                                th:field="*{distance}"
-                               type="number" min="0" max="100" step="any" value="0"/>
+                               max="100" min="0" onfocus="this.select()" step="any" type="number"
+                               value="0"/>
                     </div>
                     <div class="row">
                         <label for="durationHour" class="col col-form-label">Duration Hours</label>
@@ -109,10 +110,12 @@
                     <div class="row mb-3">
                         <input class="col form-control" id="durationHour" name="durationHour"
                                onkeypress="return checkEnter(event)"
-                               type="number" max="24" min="0" step="1" value="0"/>
+                               max="24" min="0" onfocus="this.select()" step="1" type="number"
+                               value="0"/>
                         <input class="col form-control ms-1" id="durationMinute" name="durationMinute"
                                onkeypress="return checkEnter(event)"
-                               type="number" max="60" min="0" step="1" value="00"/>
+                               max="60" min="0" onfocus="this.select()" step="1" type="number"
+                               value="00"/>
                     </div>
                     <div class="pt-3 text-center">
                         <input type="submit" value="Log this exercise data">
@@ -149,6 +152,7 @@
     function checkEnter(event) {
         return event.keyCode != 13
     }
+
 
 
 </script>

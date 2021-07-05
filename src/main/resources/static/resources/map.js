@@ -18,18 +18,6 @@ let progressCoordinates;
 
 let options;
 
-const individualOptions = {
-  lat: 32.04526885,
-  lng: -80.1408972,
-  zoom: 6,
-  style: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
-}
-const totalOptions = {
-  lat: 33.0194843,
-  lng: -80.0505926,
-  zoom: 8,
-  style: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
-}
 const mappa = new Mappa('Leaflet');
 
 function preload() {

@@ -43,7 +43,7 @@ class ExerciseViewerService {
         "lat" to 32.04526885,
         "lng" to -80.1408972,
         "zoom" to 6,
-        "style" to "http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+        "style" to "https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png"
     )
 
     final val familyRouteJSON: GeoJSON
@@ -73,7 +73,7 @@ class ExerciseViewerService {
             "lat" to avgLat,
             "lng" to avgLng,
             "zoom" to zoom(avgLat, 236262.09493654885 * dLng * 1.75).roundToInt(),
-            "style" to "http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            "style" to "https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png"
         )
     }
 

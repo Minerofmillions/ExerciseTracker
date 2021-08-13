@@ -13,8 +13,12 @@ object RouteResponseDB {
     val totalIndividualRoute: FeatureCollection
     private val individualRouteToDistance: TimeMap<Int, FeatureCollection>
     val individualRouteDistance: Int
-    val individualMapOptions
-        get() = getOptionsFromRoute(totalIndividualRoute)
+    val individualMapOptions = mapOf(
+        "lat" to 32.04526885,
+        "lng" to -80.1408972,
+        "zoom" to 6,
+        "style" to "https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png"
+    )
 
     val totalFamilyRoute: FeatureCollection
     private val familyRouteToDistance: TimeMap<Int, FeatureCollection>

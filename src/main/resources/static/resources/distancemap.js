@@ -32,7 +32,7 @@ function drawPoints(){
   noStroke()
 
   progressCoordinates.forEach(element => {
-    fill(element.first.red, element.first.green, element.first.blue)
+    fill(element.first.red, element.first.green, element.first.blue, 255)
     element.second.map(coord => myMap.latLngToPixel(coord.lat, coord.lng)).forEach(pos => {
       ellipse(pos.x, pos.y, 5, 5);
     })

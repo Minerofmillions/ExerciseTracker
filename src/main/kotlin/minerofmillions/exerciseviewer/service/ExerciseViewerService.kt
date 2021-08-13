@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service
 class ExerciseViewerService {
     fun getInformationOf(person: Person, current: String = ""): PersonData {
         return PersonData(
-            person.realName,
+            person,
             ExerciseDataDB.getIndividualDistanceMiles(person),
             ExerciseDataDB.getIndividualDistanceMiles(person) * 100 / ExerciseDataDB.getFamilyDistanceMiles(),
-            if (person.name == current) "table-active" else "",
-            person.name
+            if (person.name == current) "table-active" else ""
         )
     }
 }

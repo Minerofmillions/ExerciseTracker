@@ -26,9 +26,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:class="${person.cssClass} + ' row'" th:each="person: ${peopleStats}"
-            th:unless="${person.distance == 0.0}">
-            <td class="col-2"><a th:href="'/nameChosen?name=' + ${person.codeName}" th:text="${person.name}"></a></td>
+        <tr class="row" th:each="person: ${peopleStats}"
+            th:style="'background-color: ' + ${person.person.colorAsHex}" th:unless="${person.distance == 0.0}">
+            <td class="col-2"><a th:href="'/nameChosen?name=' + ${person.person.name}"
+                                 th:text="${person.person.realName}"></a></td>
             <td class="text-end col" th:text="${#numbers.formatDecimal(person.distance,1,2)} + ' miles'"></td>
             <td class="text-end col-2" th:text="${#numbers.formatDecimal(person.percentage,1,2)} + '%'"></td>
         </tr>

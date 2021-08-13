@@ -31,25 +31,26 @@ data class ExerciseData(
 }
 
 enum class Person(val realName: String, val color: Color) {
-    TONY("Tony", Color(0x00008B)),
+    TONY("Tony", Color(0x3F3F8B)),
     LAVERNE("Laverne", Color(0xFFC0CB)),
     VICKIE("Vickie", Color(0x00FA9A)),
-    PAM("Pam", Color(0x4B0082)),
+    PAM("Pam", Color(0x7851A9)),
     HAYDEN("Hayden", Color(0xFF7F50)),
     KEVIN("Kevin", Color(0xDC143C)),
     JEN("Jen", Color(0x9932CC)),
-    RANDY("Randy", Color(0x0F0F0F)),
+    RANDY("Randy", Color(0x7C7C7C)),
     AIMEE("Aimee", Color(0x008000)),
     CINDY("Cindy", Color(0xFFDF00)),
-    MARK("Mark", Color(0x7851A9)),
+    MARK("Mark", Color(0x4B0082)),
     JASON("Jason", Color(0x00FF00)),
-    ALEX("Alex", Color(0x800020))
+    ALEX("Alex", Color(0x800020));
+
+    val colorAsHex = "#%02X%02X%02X".format(color.red, color.green, color.blue)
 }
 
 data class PersonData(
-    val name: String,
+    val person: Person,
     val distance: Double,
     val percentage: Double,
-    val cssClass: String,
-    val codeName: String
+    val cssClass: String
 )

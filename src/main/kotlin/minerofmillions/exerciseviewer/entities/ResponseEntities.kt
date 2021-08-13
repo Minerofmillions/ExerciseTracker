@@ -39,6 +39,8 @@ class Bounds(
             (northeast.lat + southwest.lat) / 2,
             (northeast.lng + southwest.lng) / 2
         )
+
+    fun toBBox() = listOf(southwest.lat, southwest.lng, northeast.lat, northeast.lng)
 }
 
 class Coordinate(

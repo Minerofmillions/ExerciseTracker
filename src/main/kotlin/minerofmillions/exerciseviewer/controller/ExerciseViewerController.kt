@@ -1,7 +1,10 @@
 package minerofmillions.exerciseviewer.controller
 
+import minerofmillions.exerciseviewer.database.ExerciseDataDB
+import minerofmillions.exerciseviewer.database.RouteResponseDB
 import minerofmillions.exerciseviewer.entities.ExerciseData
 import minerofmillions.exerciseviewer.entities.Person
+import minerofmillions.exerciseviewer.peopleInOrderOfDistance
 import minerofmillions.exerciseviewer.service.ExerciseViewerService
 import minerofmillions.exerciseviewer.util.round
 import org.springframework.stereotype.Controller
@@ -37,11 +40,11 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         model.addAttribute("name", person.realName)
         model.addAttribute(
             "data",
-            service.exerciseDataByPerson[person]?.sortedByDescending { it.date } ?: emptyList<ExerciseData>())
-        model.addAttribute("totalIndividualDistance", service.getDistanceOf(person))
-        model.addAttribute("totalFamilyDistance", service.getFamilyDistance())
-        model.addAttribute("individualRouteDistanceMeters", service.individualRouteDistance)
-        model.addAttribute("individualRouteDistanceMiles", round(service.individualRouteDistance / 1609.34, 2))
+            ExerciseDataDB.getExerciseDataOf(person).sortedByDescending { it.date })
+        model.addAttribute("totalIndividualDistance", ExerciseDataDB.getIndividualDistanceMiles(person))
+        model.addAttribute("totalFamilyDistance", ExerciseDataDB.getFamilyDistanceMiles())
+        model.addAttribute("individualRouteDistanceMeters", RouteResponseDB.individualRouteDistance)
+        model.addAttribute("individualRouteDistanceMiles", round(RouteResponseDB.individualRouteDistance / 1609.34, 2))
         model.addAttribute("person", name)
         model.addAttribute("exerciseData", ExerciseData(person))
         model.addAttribute("exerciseTypes", ExerciseData.ExerciseType.values())
@@ -55,7 +58,7 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         @RequestParam(name = "durationMinute", defaultValue = "0") durationMin: Int
     ): RedirectView {
         data.duration = durationHour * 60 + durationMin
-        service.add(data)
+        ExerciseDataDB.save(data)
         return RedirectView("/view")
     }
 
@@ -63,13 +66,13 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
     fun resetData(
         @RequestParam(name = "resetPassword") resetPassword: String
     ): RedirectView {
-        if (resetPassword == "reset") service.resetData()
+        if (resetPassword == "reset") ExerciseDataDB.deleteAll()
         return RedirectView("/")
     }
 
     @GetMapping("/delete/{id}")
     fun deleteData(@PathVariable id: Int): RedirectView {
-        service.delete(id)
+        ExerciseDataDB.deleteById(id)
         return RedirectView("/view")
     }
 
@@ -77,7 +80,7 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
     fun scoreboard(@CookieValue(name = "name", defaultValue = "") name: String, model: Model): String {
         model.addAttribute(
             "peopleStats",
-            Person.values().map { service.getInformationOf(it, name) }.sortedByDescending { it.distance })
+            peopleInOrderOfDistance.map { service.getInformationOf(it, name) })
         model.addAttribute("personSelected", name != "")
         return "scoreboard"
     }

@@ -1,5 +1,6 @@
 package minerofmillions.exerciseviewer.entities
 
+import java.awt.Color
 import kotlin.math.max
 
 
@@ -29,20 +30,20 @@ data class ExerciseData(
     }
 }
 
-enum class Person(val realName: String) {
-    TONY("Tony"),
-    LAVERNE("Laverne"),
-    VICKIE("Vickie"),
-    PAM("Pam"),
-    HAYDEN("Hayden"),
-    KEVIN("Kevin"),
-    JEN("Jen"),
-    RANDY("Randy"),
-    AIMEE("Aimee"),
-    CINDY("Cindy"),
-    MARK("Mark"),
-    JASON("Jason"),
-    ALEX("Alex")
+enum class Person(val realName: String, val color: Color) {
+    TONY("Tony", Color(0x00008B)),
+    LAVERNE("Laverne", Color(0xFFC0CB)),
+    VICKIE("Vickie", Color(0x00FA9A)),
+    PAM("Pam", Color(0x4B0082)),
+    HAYDEN("Hayden", Color(0xFF7F50)),
+    KEVIN("Kevin", Color(0xDC143C)),
+    JEN("Jen", Color(0x9932CC)),
+    RANDY("Randy", Color(0x0F0F0F)),
+    AIMEE("Aimee", Color(0x008000)),
+    CINDY("Cindy", Color(0xFFDF00)),
+    MARK("Mark", Color(0x7851A9)),
+    JASON("Jason", Color(0x00FF00)),
+    ALEX("Alex", Color(0x800020))
 }
 
 data class PersonData(

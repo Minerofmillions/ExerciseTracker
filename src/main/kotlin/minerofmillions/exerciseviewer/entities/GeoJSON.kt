@@ -29,9 +29,17 @@ class Feature(val properties: Map<String, Any>?, val geometry: Geometry?, bbox: 
     GeoJSON("Feature", bbox)
 
 fun emptyFeatureCollection() = FeatureCollection(emptyList())
-fun featureCollectionOf(vararg features: Feature) = FeatureCollection(features.toList())
+fun featureCollectionOf(vararg features: Feature, bbox: List<Double>? = null) =
+    FeatureCollection(features.toList(), bbox = bbox)
 
-sealed class Geometry(type: String) : GeoJSON(type) {
+fun emptyLineString() = LineString(emptyList())
+fun lineStringOf(vararg points: Position, bbox: List<Double>? = null) = LineString(points.toList(), bbox = bbox)
+fun lineStringOf(vararg points: Coordinate, bbox: List<Double>? = null) =
+    LineString(points.map { Position(it) }, bbox = bbox)
+
+fun lineStringOf(points: Collection<Position>, bbox: List<Double>? = null) = LineString(points.toList(), bbox = bbox)
+
+sealed class Geometry(type: String, bbox: List<Double>? = null) : GeoJSON(type, bbox) {
     object Serializer : JsonDeserializer<Geometry> {
         override fun deserialize(element: JsonElement, type: Type, context: JsonDeserializationContext): Geometry =
             context.deserialize(
@@ -50,13 +58,14 @@ sealed class Geometry(type: String) : GeoJSON(type) {
     }
 }
 
-class Point(val coordinates: Position) : Geometry("Point")
-class MultiPoint(val coordinates: List<Point>) : Geometry("MultiPoint")
-class LineString(val coordinates: List<Position>) : Geometry("LineString")
-class MultiLineString(val coordinates: List<LineString>) : Geometry("MultiLineString")
-class Polygon(val coordinates: List<List<Position>>) : Geometry("Polygon")
-class MultiPolygon(val coordinates: List<Polygon>) : Geometry("MultiPolygon")
-class GeometryCollection(val geometries: List<Geometry>) : Geometry("GeometryCollection")
+class Point(val coordinates: Position, bbox: List<Double>? = null) : Geometry("Point", bbox)
+class MultiPoint(val coordinates: List<Point>, bbox: List<Double>? = null) : Geometry("MultiPoint", bbox)
+class LineString(val coordinates: List<Position>, bbox: List<Double>? = null) : Geometry("LineString", bbox)
+class MultiLineString(val coordinates: List<LineString>, bbox: List<Double>? = null) : Geometry("MultiLineString", bbox)
+class Polygon(val coordinates: List<List<Position>>, bbox: List<Double>? = null) : Geometry("Polygon", bbox)
+class MultiPolygon(val coordinates: List<Polygon>, bbox: List<Double>? = null) : Geometry("MultiPolygon", bbox)
+class GeometryCollection(val geometries: List<Geometry>, bbox: List<Double>? = null) :
+    Geometry("GeometryCollection", bbox)
 
 class Position(val lat: Double, val lng: Double) {
     constructor(coordinate: Coordinate) : this(coordinate.lat, coordinate.lng)

@@ -17,19 +17,19 @@
     <div class="row">
         <p class="fs-2 col text-center" th:if="${personSelected}"><a href="/view">View your exercise data</a></p>
     </div>
-    <table class="container table table-bordered">
+    <table class="container table table-bordered fw-bold">
         <thead class="table-dark">
         <tr class="row">
-            <th class="col-2" scope="col">Name</th>
-            <th class="col text-end" scope="col">Distance</th>
-            <th class="col-2 text-end" scope="col">Percentage</th>
+            <th class="col-2 fw-bolder" scope="col">Name</th>
+            <th class="col text-end fw-bolder" scope="col">Distance</th>
+            <th class="col-2 text-end fw-bolder" scope="col">Percentage</th>
         </tr>
         </thead>
         <tbody>
         <tr class="row" th:each="person: ${peopleStats}"
             th:style="'background-color: ' + ${person.person.colorAsHex}" th:unless="${person.distance == 0.0}">
             <td class="col-2"><a th:href="'/nameChosen?name=' + ${person.person.name}"
-                                 th:text="${person.person.realName}"></a></td>
+                                 class="text-reset" th:text="${person.person.realName}"></a></td>
             <td class="text-end col" th:text="${#numbers.formatDecimal(person.distance,1,2)} + ' miles'"></td>
             <td class="text-end col-2" th:text="${#numbers.formatDecimal(person.percentage,1,2)} + '%'"></td>
         </tr>

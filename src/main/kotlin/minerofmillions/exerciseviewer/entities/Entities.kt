@@ -31,19 +31,19 @@ data class ExerciseData(
 }
 
 enum class Person(val realName: String, val color: Color) {
-    TONY("Tony", Color(0x3F3F8B)),
+    TONY("Tony", Color(0x746FC1)),
     LAVERNE("Laverne", Color(0xFFC0CB)),
     VICKIE("Vickie", Color(0x00FA9A)),
     PAM("Pam", Color(0x7851A9)),
     HAYDEN("Hayden", Color(0xFF7F50)),
     KEVIN("Kevin", Color(0xDC143C)),
-    JEN("Jen", Color(0x9932CC)),
+    JEN("Jen", Color(0xFF00FF)),
     RANDY("Randy", Color(0x7C7C7C)),
-    AIMEE("Aimee", Color(0x008000)),
+    AIMEE("Aimee", Color(0x6ACE57)),
     CINDY("Cindy", Color(0xFFDF00)),
-    MARK("Mark", Color(0x4B0082)),
+    MARK("Mark", Color(0x9E57D5)),
     JASON("Jason", Color(0x00FF00)),
-    ALEX("Alex", Color(0x800020));
+    ALEX("Alex", Color(0xc54e54));
 
     val colorAsHex = "#%02X%02X%02X".format(color.red, color.green, color.blue)
 }

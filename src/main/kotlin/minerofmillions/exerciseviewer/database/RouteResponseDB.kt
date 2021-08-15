@@ -53,21 +53,7 @@ object RouteResponseDB {
     }
 
     private fun getTotalRouteFromResponse(response: Response): FeatureCollection {
-        val route = response.routes.first()
-
-        val positions = route.legs.flatMap { leg ->
-            leg.steps.flatMap { step ->
-                getPositions(step)
-            }
-        }
-
-        val startLocation = Position(route.legs.first().start_location)
-        var fullDistance = 0
-        val fullRoute = mutableMapOf(0 to startLocation)
-        positions.forEach { (pos, distance) ->
-            fullDistance += distance
-            fullRoute[fullDistance] = pos
-        }
+        val fullRoute = getFullRouteFromResponse(response)
 
         val bbox = getBBox(fullRoute.values)
         val lineString = lineStringOf(fullRoute.values, bbox = bbox)
@@ -75,21 +61,7 @@ object RouteResponseDB {
     }
 
     private fun getRoutesToDistancesFromResponse(response: Response): TimeMap<Int, FeatureCollection> {
-        val route = response.routes.first()
-
-        val positions = route.legs.flatMap { leg ->
-            leg.steps.flatMap { step ->
-                getPositions(step)
-            }
-        }
-
-        val startLocation = Position(route.legs.first().start_location)
-        var fullDistance = 0
-        val fullRoute = mutableMapOf(0 to startLocation)
-        positions.forEach { (pos, distance) ->
-            fullDistance += distance
-            fullRoute[fullDistance] = pos
-        }
+        val fullRoute = getFullRouteFromResponse(response)
 
         return fullRoute.keys.map { distance ->
             val points = fullRoute.entries.filter { it.key in 0..distance }.map { it.value }
@@ -100,6 +72,25 @@ object RouteResponseDB {
                 bbox = bbox
             )
         }.associate { it }.toTimeMap()
+    }
+
+    private fun getFullRouteFromResponse(response: Response): Map<Int, Position> {
+        val route = response.routes.first()
+
+        val positions = route.legs.flatMap { leg ->
+            leg.steps.flatMap { step ->
+                getPositions(step)
+            }
+        }
+
+        val startLocation = Position(route.legs.first().start_location)
+        var fullDistance = 0
+        val fullRoute = mutableMapOf(0 to startLocation)
+        positions.forEach { (pos, distance) ->
+            fullDistance += distance
+            fullRoute[fullDistance] = pos
+        }
+        return fullRoute
     }
 
     private fun getFullRouteDistanceFromResponse(response: Response): Int =

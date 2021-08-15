@@ -1,5 +1,6 @@
 package minerofmillions.exerciseviewer.controller
 
+import minerofmillions.exerciseviewer.METERS_PER_MILE
 import minerofmillions.exerciseviewer.database.ExerciseDataDB
 import minerofmillions.exerciseviewer.database.RouteResponseDB
 import minerofmillions.exerciseviewer.entities.ExerciseData
@@ -44,7 +45,7 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         model.addAttribute("totalIndividualDistance", ExerciseDataDB.getIndividualDistanceMiles(person))
         model.addAttribute("totalFamilyDistance", ExerciseDataDB.getFamilyDistanceMiles())
         model.addAttribute("individualRouteDistanceMeters", RouteResponseDB.individualRouteDistance)
-        model.addAttribute("individualRouteDistanceMiles", round(RouteResponseDB.individualRouteDistance / 1609.34, 2))
+        model.addAttribute("individualRouteDistanceMiles", round(RouteResponseDB.individualRouteDistance / METERS_PER_MILE, 2))
         model.addAttribute("person", name)
         model.addAttribute("exerciseData", ExerciseData(person))
         model.addAttribute("exerciseTypes", ExerciseData.ExerciseType.values())

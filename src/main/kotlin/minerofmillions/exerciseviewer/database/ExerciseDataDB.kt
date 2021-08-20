@@ -12,6 +12,7 @@ import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
+import java.io.File
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -22,13 +23,20 @@ object ExerciseDataDB {
     private val exerciseData = mutableListOf<ExerciseData>()
     private val s3 = S3Client.builder().region(Region.US_EAST_1).build()
 
-    //    private val properties = Properties().apply {
-//        File(".env").reader().use { load(it) }
-//    }
-    private val bucket = System.getenv("BUCKETEER_BUCKET_NAME")!!
+    private val properties by lazy {
+        Properties().apply {
+            File(".env").reader().use { load(it) }
+            propertyNames().asSequence().forEach(::println)
+        }
+    }
+    private val bucket = System.getenv("BUCKETEER_BUCKET_NAME")
+        ?: properties.getProperty("BUCKETEER_BUCKET_NAME").trim()
     private val credentials = object : AwsCredentials {
-        override fun accessKeyId(): String = System.getenv("BUCKETEER_AWS_ACCESS_KEY_ID")!!
-        override fun secretAccessKey(): String = System.getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")!!
+        override fun accessKeyId(): String = System.getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
+            ?: properties.getProperty("BUCKETEER_AWS_ACCESS_KEY_ID").trim()
+
+        override fun secretAccessKey(): String = System.getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
+            ?: properties.getProperty("BUCKETEER_AWS_SECRET_ACCESS_KEY").trim()
     }
 
     init {

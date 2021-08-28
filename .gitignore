@@ -34,3 +34,5 @@ build/
 
 data.json
 .env
+
+apple_health_export

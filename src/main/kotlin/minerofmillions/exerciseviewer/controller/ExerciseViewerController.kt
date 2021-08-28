@@ -7,11 +7,13 @@ import minerofmillions.exerciseviewer.entities.ExerciseData
 import minerofmillions.exerciseviewer.entities.Person
 import minerofmillions.exerciseviewer.peopleInOrderOfDistance
 import minerofmillions.exerciseviewer.service.ExerciseViewerService
+import minerofmillions.exerciseviewer.trackStartDate
 import minerofmillions.exerciseviewer.util.round
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.view.RedirectView
+import java.time.format.DateTimeFormatter
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 
@@ -49,6 +51,7 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         model.addAttribute("person", name)
         model.addAttribute("exerciseData", ExerciseData(person))
         model.addAttribute("exerciseTypes", ExerciseData.ExerciseType.values())
+        model.addAttribute("trackStartDate", trackStartDate.format(DateTimeFormatter.ISO_DATE))
         return "view"
     }
 

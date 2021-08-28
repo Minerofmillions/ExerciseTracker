@@ -93,7 +93,7 @@
                         <label for="date" class="col-3 col-form-label">Date</label>
                         <input class="form-control" id="date" onkeypress="return checkEnter(event)" th:field="*{date}"
                                type="date"
-                               min="2021-06-01"/>
+                               th:min="${trackStartDate}"/>
                     </div>
                     <div class="mb-3">
                         <label for="distance" class="col-3 col-form-label">Distance</label>

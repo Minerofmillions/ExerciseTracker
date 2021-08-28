@@ -26,7 +26,6 @@ object ExerciseDataDB {
     private val properties by lazy {
         Properties().apply {
             File(".env").reader().use { load(it) }
-            propertyNames().asSequence().forEach(::println)
         }
     }
     private val bucket = System.getenv("BUCKETEER_BUCKET_NAME")

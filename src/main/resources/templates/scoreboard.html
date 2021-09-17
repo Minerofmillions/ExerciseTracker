@@ -11,34 +11,41 @@
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <h1 class="col text-center">Crabb Family Exercise Challenge</h1>
+    <div id="everythingButMap">
+        <div class="row">
+            <h1 class="col text-center">Crabb Family Exercise Challenge</h1>
+        </div>
+        <div class="row">
+            <p class="fs-2 col text-center" th:if="${personSelected}"><a href="/view">View your exercise data</a></p>
+        </div>
+        <table class="container table table-bordered fw-bold">
+            <thead class="table-dark">
+            <tr class="row">
+                <th class="col-2 fw-bolder" scope="col">Name</th>
+                <th class="col text-end fw-bolder" scope="col">Distance</th>
+                <th class="col-2 text-end fw-bolder" scope="col">Percentage</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="row" th:each="person: ${peopleStats}"
+                th:style="'background-color: ' + ${person.person.colorAsHex}" th:unless="${person.distance == 0.0}">
+                <td class="col-2"><a th:href="'/nameChosen?name=' + ${person.person.name}"
+                                     class="text-reset" th:text="${person.person.realName}"></a></td>
+                <td class="text-end col" th:text="${#numbers.formatDecimal(person.distance,1,2)} + ' miles'"></td>
+                <td class="text-end col-2" th:text="${#numbers.formatDecimal(person.percentage,1,2)} + '%'"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div class="row">
-        <p class="fs-2 col text-center" th:if="${personSelected}"><a href="/view">View your exercise data</a></p>
-    </div>
-    <table class="container table table-bordered fw-bold">
-        <thead class="table-dark">
-        <tr class="row">
-            <th class="col-2 fw-bolder" scope="col">Name</th>
-            <th class="col text-end fw-bolder" scope="col">Distance</th>
-            <th class="col-2 text-end fw-bolder" scope="col">Percentage</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="row" th:each="person: ${peopleStats}"
-            th:style="'background-color: ' + ${person.person.colorAsHex}" th:unless="${person.distance == 0.0}">
-            <td class="col-2"><a th:href="'/nameChosen?name=' + ${person.person.name}"
-                                 class="text-reset" th:text="${person.person.realName}"></a></td>
-            <td class="text-end col" th:text="${#numbers.formatDecimal(person.distance,1,2)} + ' miles'"></td>
-            <td class="text-end col-2" th:text="${#numbers.formatDecimal(person.percentage,1,2)} + '%'"></td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="row">
-        <iframe height="300px" id="familyMap"
+        <iframe class="col" height="500px"
+                id="familyMap"
                 src="/distancemap.html" title="Family Progress Map (colored by distance)"></iframe>
     </div>
 </div>
+<script>
+    document.getElementById("familyMap")
+
+</script>
 </body>
 </html>

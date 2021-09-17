@@ -42,16 +42,16 @@ function drawPoints(){
   clear()
   noStroke();
   fill('rgba(127,127,127,0.25)');
-  routeCoordinates.map(coord => myMap.latLngToPixel(coord.lat, coord.lng)).forEach(pos => {
+  routeCoordinates.map(coord => myMap.latLngToPixel(coord)).forEach(pos => {
     ellipse(pos.x, pos.y, 5, 5);
   });
-  fill('rgba(0,255,0,0.25)');
-  progressCoordinates.map(coord => myMap.latLngToPixel(coord.lat, coord.lng)).forEach(pos => {
+  fill('rgba(0,255,0,0.5)');
+  progressCoordinates.map(coord => myMap.latLngToPixel(coord)).forEach(pos => {
     ellipse(pos.x, pos.y, 5, 5);
   });
 
   fill(255, 127, 0);
   let start = progressCoordinates[0];
-  let startPos = myMap.latLngToPixel(start.lat, start.lng);
+  let startPos = myMap.latLngToPixel(start);
   ellipse(startPos.x, startPos.y, 7, 7);
 }

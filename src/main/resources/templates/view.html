@@ -31,19 +31,23 @@
         </div>
     </div>
     <div class="row">
+        <!--
         <div class="col" th:with="percentage = ${totalIndividualDistance * 100 / individualRouteDistanceMiles}">
             <h4 th:text="'Individual Progress - ' +${#numbers.formatDecimal(totalIndividualDistance,1,2)} + ' miles of '+ ${individualRouteDistanceMiles}
             + ' (' + ${#numbers.formatDecimal(percentage,1,2)} + '%)'"></h4>
         </div>
+        -->
         <div class="col">
             <h4 th:text="'Family Progress - ' + ${#numbers.formatDecimal(totalFamilyDistance,1,2)}+' miles'"></h4>
         </div>
     </div>
     <div class="row">
+        <!--
         <div class="map col">
             <iframe class="full" id="individualMap" src="/map.html?type=individual"
                     title="Individual Progress Map"></iframe>
         </div>
+        -->
         <div class="map col">
             <iframe class="full" id="familyMap" src="/map.html?type=family"
                     title="Family Progress Map"></iframe>

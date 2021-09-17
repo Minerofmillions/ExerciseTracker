@@ -66,7 +66,7 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         return RedirectView("/view")
     }
 
-    @PostMapping("/reset")
+    @GetMapping("/reset")
     fun resetData(
         @RequestParam(name = "resetPassword") resetPassword: String
     ): RedirectView {

@@ -45,6 +45,6 @@ fun healthImport() {
 class ExerciseViewerApplication
 
 fun main(args: Array<String>) {
-    healthImport()
+//    healthImport()
     runApplication<ExerciseViewerApplication>(*args)
 }

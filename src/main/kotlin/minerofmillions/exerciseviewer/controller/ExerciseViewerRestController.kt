@@ -21,7 +21,7 @@ class ExerciseViewerRestController(val service: ExerciseViewerService) {
 
     @RequestMapping("/data/family/route")
     @Cacheable("totalRoute")
-    fun getFamilyRouteData(): GeoJSON? = getFamilyProgress()
+    fun getFamilyRouteData(): GeoJSON = emptyFeatureCollection()
 
     @RequestMapping("/data/test/route")
     @Cacheable("testRoute")

@@ -63,15 +63,15 @@ object RouteResponseDB {
     private fun getRoutesToDistancesFromResponse(response: Response): TimeMap<Int, FeatureCollection> {
         val fullRoute = getFullRouteFromResponse(response)
 
-        return fullRoute.keys.map { distance ->
+        return fullRoute.keys.associateWith { distance ->
             val points = fullRoute.entries.filter { it.key in 0..distance }.map { it.value }
             val bbox = getBBox(points)
             val lineString = lineStringOf(points, bbox = bbox)
-            distance to featureCollectionOf(
+            featureCollectionOf(
                 Feature(null, lineString, bbox = bbox),
                 bbox = bbox
             )
-        }.associate { it }.toTimeMap()
+        }.toTimeMap()
     }
 
     private fun getFullRouteFromResponse(response: Response): Map<Int, Position> {
@@ -119,16 +119,19 @@ object RouteResponseDB {
 
     private fun getOptionsFromRoute(route: GeoJSON): Map<String, Any> {
         val bbox = route.bbox!!
-        val avgLat = (bbox[0] + bbox[2]) / 2
-        val avgLng = (bbox[1] + bbox[3]) / 2
+        val centerLat = (bbox[0] + bbox[2]) / 2
+        val centerLng = (bbox[1] + bbox[3]) / 2
 
         val dLat = bbox[2] - bbox[0]
         val dLng = bbox[3] - bbox[1]
 
+        //  lngShown = 360 / 2.0.pow(zoomLevel)
+        val zoomLevel = log2(360 / max(dLat, dLng)).coerceAtMost(15.0)
+
         return mapOf(
-            "lat" to avgLat,
-            "lng" to avgLng,
-            "zoom" to zoom(avgLat, 236262.09493654885 * dLng * 1.75).roundToInt(),
+            "lat" to centerLat,
+            "lng" to centerLng,
+            "zoom" to zoomLevel.roundToInt(),
             "style" to "https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png"
         )
     }

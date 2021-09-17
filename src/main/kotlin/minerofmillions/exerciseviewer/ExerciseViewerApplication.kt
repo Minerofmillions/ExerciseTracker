@@ -26,7 +26,7 @@ internal val peopleInOrderOfDistance
 
 private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")
 
-internal val trackStartDate = LocalDate.of(2021, 6, 1)
+internal val trackStartDate = LocalDate.of(2021, 9, 17)
 
 fun healthImport() {
     val healthInfo = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse("apple_health_export/export.xml")

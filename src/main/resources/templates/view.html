@@ -70,7 +70,7 @@
             <td th:text="${current.formattedDate}"></td>
             <td th:text="${current.type.readableName}"></td>
             <td class="text-end" th:text="${current.distance}"></td>
-            <td class="text-end" th:text="${current.formattedTime}"></td>
+            <td class="text-end" th:text="${current.formattedDuration}"></td>
             <td class="text-end" th:text="${current.weightedDistance}"></td>
             <td class="text-center"><a class="btn btn-primary" th:href="'/delete/' + ${current.id}">Delete</a></td>
         </tr>

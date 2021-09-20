@@ -12,21 +12,21 @@ data class ExerciseData(
     var duration: Int = 0
 ) {
     val weightedDistance: Double
-        get() = max(distance, duration / 5.0)
+        get() = type.getWeightedDistance(distance, duration)
 
     var id = -1
     val formattedDate
         get() = "${date.substring(5, 7)}/${date.substring(8, 10)}/${date.substring(0, 4)}"
 
-    val formattedTime
+    val formattedDuration
         get() = "%2d:%02d".format(duration / 60, duration % 60)
 
-    enum class ExerciseType(val readableName: String) {
-        BIKING("Biking"),
-        WALKING("Walking"),
-        RUNNING("Running"),
-        CARDIO("Cardio"),
-        WEIGHTLIFTING("Weightlifting"),
+    enum class ExerciseType(val readableName: String, val getWeightedDistance: (Double, Int) -> Double) {
+        BIKING("Biking", { distance, duration -> distance }),
+        WALKING("Walking", { distance, duration -> max(distance, duration / 5.0) }),
+        RUNNING("Running", { distance, duration -> max(distance, duration / 5.0) }),
+        CARDIO("Cardio", { distance, duration -> max(distance, duration / 5.0) }),
+        WEIGHTLIFTING("Weightlifting", { distance, duration -> max(distance, duration / 5.0) });
     }
 }
 

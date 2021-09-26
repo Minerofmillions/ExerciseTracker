@@ -43,7 +43,9 @@ enum class Person(val realName: String, val color: Color) {
     CINDY("Cindy", Color(0xFFDF00)),
     MARK("Mark", Color(0x9E57D5)),
     JASON("Jason", Color(0x00FF00)),
-    ALEX("Alex", Color(0xc54e54));
+    ALEX("Alex", Color(0xc54e54)),
+    ETHAN("Ethan", Color(0x00FFFF)),
+    CARTER("Carter", Color(0x007CFF));
 
     val colorAsHex = "#%02X%02X%02X".format(color.red, color.green, color.blue)
 }

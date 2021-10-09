@@ -22,7 +22,8 @@ internal val gson: Gson = GsonBuilder()
 internal const val METERS_PER_MILE = 1609.344
 
 internal val peopleInOrderOfDistance
-    get() = Person.values().sortedByDescending(ExerciseDataDB::getIndividualDistanceMiles)
+    get() = Person.values().filter { ExerciseDataDB.getIndividualDistanceMeters(it) > 0 }
+        .sortedByDescending(ExerciseDataDB::getIndividualDistanceMiles)
 
 private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")
 

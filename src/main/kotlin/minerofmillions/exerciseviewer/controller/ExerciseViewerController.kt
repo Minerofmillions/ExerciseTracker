@@ -43,7 +43,9 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         model.addAttribute("name", person.realName)
         model.addAttribute(
             "data",
-            ExerciseDataDB.getExerciseDataOf(person).sortedByDescending { it.date })
+            ExerciseDataDB.getExerciseDataOf(person)
+                .sortedWith(compareByDescending<ExerciseData> { it.date }.thenBy { it.id })
+        )
         model.addAttribute("totalIndividualDistance", ExerciseDataDB.getIndividualDistanceMiles(person))
         model.addAttribute("totalFamilyDistance", ExerciseDataDB.getFamilyDistanceMiles())
         model.addAttribute("individualRouteDistanceMeters", RouteResponseDB.individualRouteDistance)

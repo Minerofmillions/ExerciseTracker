@@ -5,7 +5,9 @@ import minerofmillions.exerciseviewer.entities.*
 import minerofmillions.exerciseviewer.gson
 import minerofmillions.exerciseviewer.peopleInOrderOfDistance
 import minerofmillions.exerciseviewer.util.TimeMap
+import minerofmillions.exerciseviewer.util.scanValues
 import minerofmillions.exerciseviewer.util.toTimeMap
+import java.awt.Color
 import java.io.File
 import kotlin.math.*
 
@@ -31,10 +33,17 @@ object RouteResponseDB {
 
     fun getFamilyProgress() = familyRouteToDistance[ExerciseDataDB.getFamilyDistanceMeters()]!!
 
-    fun getDistanceProgresses() = peopleInOrderOfDistance.drop(1)
-        .runningFold(peopleInOrderOfDistance[0] to ExerciseDataDB.getFamilyDistanceMeters()) { (oldPerson, dist), person ->
-            person to dist - ExerciseDataDB.getIndividualDistanceMeters(oldPerson)
-        }.map { it.first.color to familyRouteToDistance[it.second] }
+    fun getDistanceProgresses(): List<Pair<Color, FeatureCollection?>> = peopleInOrderOfDistance
+        .asReversed()
+        // Create a map of (Person n -> Individual Distance of Person n)
+        .associateWith { ExerciseDataDB.getIndividualDistanceMeters(it) }
+        // Accumulate distances i.e. (Person 1 -> Distance 1, Person 2 -> Distance 1 + Distance 2, ...)
+        .scanValues(0) { acc, (_, distance) -> acc + distance }
+        // Transform distance to route
+        .mapValues { familyRouteToDistance[it.value] }
+        .mapKeys { (person, _) -> person.color }
+        .toList()
+        .asReversed()
 
     init {
         val individualResponse = File("individualResponse.json").reader().use {

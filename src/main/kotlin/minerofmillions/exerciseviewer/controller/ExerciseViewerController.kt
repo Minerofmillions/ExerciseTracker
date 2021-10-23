@@ -41,6 +41,7 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
     fun viewData(@CookieValue(name = "name") name: String, model: Model): String {
         val person = Person.valueOf(name)
         model.addAttribute("name", person.realName)
+        model.addAttribute("defaultExerciseType", person.defaultExerciseType)
         model.addAttribute(
             "data",
             ExerciseDataDB.getExerciseDataOf(person)

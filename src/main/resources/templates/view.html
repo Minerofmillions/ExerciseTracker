@@ -90,6 +90,7 @@
                         <label for="type" class="col-3 col-form-label">Type</label>
                         <select class="form-select" id="type" onkeypress="return checkEnter(event)" th:field="*{type}">
                             <option th:each="exerciseType: ${exerciseTypes}" th:text="${exerciseType.readableName}"
+                                    th:selected="${defaultExerciseType==exerciseType}"
                                     th:value="${exerciseType}"></option>
                         </select>
                     </div>

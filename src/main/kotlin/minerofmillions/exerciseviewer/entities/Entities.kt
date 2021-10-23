@@ -6,7 +6,7 @@ import kotlin.math.max
 
 data class ExerciseData(
     val person: Person,
-    var type: ExerciseType = ExerciseType.BIKING,
+    var type: ExerciseType = person.defaultExerciseType,
     var date: String = "",
     var distance: Double = 0.0,
     var duration: Int = 0
@@ -21,21 +21,28 @@ data class ExerciseData(
     val formattedDuration
         get() = "%2d:%02d".format(duration / 60, duration % 60)
 
-    enum class ExerciseType(val readableName: String, val getWeightedDistance: (Double, Int) -> Double) {
-        BIKING("Biking", { distance, duration -> distance }),
+    enum class ExerciseType(
+        val readableName: String,
+        val getWeightedDistance: (distance: Double, duration: Int) -> Double
+    ) {
+        BIKING("Biking", { distance, _ -> distance }),
         WALKING("Walking", { distance, duration -> max(distance, duration / 5.0) }),
         RUNNING("Running", { distance, duration -> max(distance, duration / 5.0) }),
         CARDIO("Cardio", { distance, duration -> max(distance, duration / 5.0) }),
-        WEIGHTLIFTING("Weightlifting", { distance, duration -> max(distance, duration / 5.0) });
+        WEIGHTLIFTING("Weightlifting", { distance, duration -> max(distance, duration / 5.0) })
     }
 }
 
-enum class Person(val realName: String, val color: Color) {
-    TONY("Tony", Color(0x746FC1)),
-    LAVERNE("Laverne", Color(0xFFC0CB)),
-    VICKIE("Vickie", Color(0x00FA9A)),
-    PAM("Pam", Color(0x7851A9)),
-    HAYDEN("Hayden", Color(0xFF7F50)),
+enum class Person(
+    val realName: String,
+    val color: Color,
+    val defaultExerciseType: ExerciseData.ExerciseType = ExerciseData.ExerciseType.BIKING
+) {
+    TONY("Tony", Color(0x746FC1), ExerciseData.ExerciseType.WALKING),
+    LAVERNE("Laverne", Color(0xFFC0CB), ExerciseData.ExerciseType.WALKING),
+    VICKIE("Vickie", Color(0x00FA9A), ExerciseData.ExerciseType.WALKING),
+    PAM("Pam", Color(0x7851A9), ExerciseData.ExerciseType.WALKING),
+    HAYDEN("Hayden", Color(0xFF7F50), ExerciseData.ExerciseType.WALKING),
     KEVIN("Kevin", Color(0xDC143C)),
     JEN("Jen", Color(0xFF00FF)),
     RANDY("Randy", Color(0x7C7C7C)),

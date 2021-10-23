@@ -1,12 +1,13 @@
 package minerofmillions.exerciseviewer.entities
 
+import minerofmillions.exerciseviewer.database.ExerciseDataDB
 import java.awt.Color
 import kotlin.math.max
 
 
 data class ExerciseData(
     val person: Person,
-    var type: ExerciseType = person.defaultExerciseType,
+    var type: ExerciseType = person.latestExerciseType,
     var date: String = "",
     var distance: Double = 0.0,
     var duration: Int = 0
@@ -36,7 +37,7 @@ data class ExerciseData(
 enum class Person(
     val realName: String,
     val color: Color,
-    val defaultExerciseType: ExerciseData.ExerciseType = ExerciseData.ExerciseType.BIKING
+    defaultExerciseType: ExerciseData.ExerciseType = ExerciseData.ExerciseType.BIKING
 ) {
     TONY("Tony", Color(0x746FC1), ExerciseData.ExerciseType.WALKING),
     LAVERNE("Laverne", Color(0xFFC0CB), ExerciseData.ExerciseType.WALKING),
@@ -55,6 +56,7 @@ enum class Person(
     CARTER("Carter", Color(0x007CFF));
 
     val colorAsHex = "#%02X%02X%02X".format(color.red, color.green, color.blue)
+    val latestExerciseType = ExerciseDataDB.getExerciseDataOf(this).maxByOrNull { it.id }?.type ?: defaultExerciseType
 }
 
 data class PersonData(

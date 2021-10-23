@@ -44,3 +44,5 @@ fun <K, V, R> Map<K, V>.scanKeys(initial: R, operation: (acc: R, Map.Entry<K, V>
         current
     }
 }
+
+fun <E> Collection<E>.mostCommon() = toSet().maxByOrNull { option -> count { it == option } }

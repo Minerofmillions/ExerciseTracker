@@ -22,7 +22,9 @@
             <thead class="table-dark">
             <tr class="row">
                 <th class="col-2 fw-bolder" scope="col">Name</th>
-                <th class="col text-end fw-bolder" scope="col">Distance</th>
+                <th class="col text-end fw-bolder" scope="col"
+                    th:text="'Distance (' + ${#numbers.formatDecimal(totalFamilyDistance,1,2)} + ')'">Distance
+                </th>
                 <th class="col-2 text-end fw-bolder" scope="col">Percentage</th>
             </tr>
             </thead>

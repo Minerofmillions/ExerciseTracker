@@ -87,6 +87,7 @@ class ExerciseViewerController(val service: ExerciseViewerService) {
         model.addAttribute(
             "peopleStats",
             peopleInOrderOfDistance.map { service.getInformationOf(it, name) })
+        model.addAttribute("totalFamilyDistance", ExerciseDataDB.getFamilyDistanceMiles())
         model.addAttribute("personSelected", name != "")
         return "scoreboard"
     }

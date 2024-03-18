@@ -71,12 +71,12 @@ object ExerciseDataDB {
 
     fun getExerciseDataOf(person: Person) = exerciseData.filter { it.person == person }
 
-    fun getFamilyDistanceMiles() = exerciseData.sumByDouble { it.weightedDistance }
+    fun getFamilyDistanceMiles() = exerciseData.sumOf { it.weightedDistance }
 
     internal fun getFamilyDistanceMeters() = (getFamilyDistanceMiles() * METERS_PER_MILE).roundToInt()
 
     internal fun getIndividualDistanceMiles(person: Person) =
-        getExerciseDataOf(person).sumByDouble { it.weightedDistance }
+        getExerciseDataOf(person).sumOf { it.weightedDistance }
 
     internal fun getIndividualDistanceMeters(person: Person) =
         (getIndividualDistanceMiles(person) * METERS_PER_MILE).roundToInt()

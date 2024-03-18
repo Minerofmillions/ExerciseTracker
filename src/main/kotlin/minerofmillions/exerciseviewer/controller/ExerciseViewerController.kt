@@ -1,5 +1,7 @@
 package minerofmillions.exerciseviewer.controller
 
+import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletResponse
 import minerofmillions.exerciseviewer.METERS_PER_MILE
 import minerofmillions.exerciseviewer.database.ExerciseDataDB
 import minerofmillions.exerciseviewer.database.RouteResponseDB
@@ -14,8 +16,6 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.view.RedirectView
 import java.time.format.DateTimeFormatter
-import javax.servlet.http.Cookie
-import javax.servlet.http.HttpServletResponse
 
 @Controller
 class ExerciseViewerController(val service: ExerciseViewerService) {

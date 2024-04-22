@@ -8,9 +8,9 @@
         <version>3.2.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>minerofmillions</groupId>
+    <groupId>io.github.minerofmillions</groupId>
     <artifactId>exerciseviewer</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>exerciseviewer</name>
     <description>Exercise Viewer for Minerofmillions' family.</description>
     <properties>
